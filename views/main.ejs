@@ -1,0 +1,90 @@
+<!doctype html>
+<html data-theme="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>
+      <%= configFunctions.getConfigProperty('application.applicationName') %>
+    </title>
+
+    <link href="<%= urlPrefix %>/lib/bulma/bulma.min.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <span class="navbar-item">
+          <%= configFunctions.getConfigProperty("application.applicationName")
+          %>
+        </span>
+      </div>
+    </nav>
+
+    <div class="section pt-4">
+      <main class="columns">
+        <aside class="column is-5">
+          <form class="mb-4" id="form--addressSearch">
+            <div class="field">
+              <label class="label" for="addressSearch--civicAddress">
+                Civic Address
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="addressSearch--civicAddress"
+                  name="civicAddress"
+                  type="text"
+                  placeholder="123 Main St."
+                />
+              </div>
+            </div>
+          </form>
+          <div id="container--addressSearchResults"></div>
+        </aside>
+        <section class="column">
+          <div class="is-hidden" id="container--addressDetails">
+            <div class="columns is-mobile is-vcentered">
+              <div class="column">
+                <h1 class="title is-4" id="addressDetails--address">Address Details</h1>
+              </div>
+              <div class="column is-narrow has-text-right">
+                <div class="field is-grouped is-grouped-multiline">
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag is-dark">Ward</span>
+                      <span class="tag" id="addressDetails--ward">N/A</span>
+                    </div>
+                  </div>
+                  <div class="control">
+                    <div class="tags has-addons">
+                      <span class="tag is-dark">Poll</span>
+                      <span class="tag" id="addressDetails--pollAndSuffix">N/A</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="column">
+                <h2 class="title is-5">Voting Locations</h2>
+                <div id="container--votingLocations"></div>
+              </div>
+              <div class="column">
+                <h2 class="title is-5">Candidates</h2>
+                <div id="container--candidates"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <script src="<%= urlPrefix %>/javascripts/main.js"></script>
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
+  </body>
+</html>
