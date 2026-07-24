@@ -2,7 +2,7 @@ import { NodeCache } from '@cacheable/node-cache'
 import type { StreetAddress } from '@cityssm/voterview-api/types'
 import type { Request, Response } from 'express'
 
-import { voterViewApi } from '../helpers/api.helpers.js'
+import { voterViewApi } from '../../helpers/api.helpers.js'
 
 interface DoGetAddressesRequest {
   civicAddress?: string

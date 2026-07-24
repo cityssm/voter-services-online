@@ -1,5 +1,5 @@
 import { NodeCache } from '@cacheable/node-cache';
-import { voterViewApi } from '../helpers/api.helpers.js';
+import { voterViewApi } from '../../helpers/api.helpers.js';
 const positionsCache = new NodeCache({
     stdTTL: 2 * 60
 });
@@ -7,7 +7,7 @@ export default async function handler(request, response) {
     const ward = request.query.ward ?? '';
     const streetName = request.query.streetName ?? '';
     const streetNumber = request.query.streetNumber ?? '';
-    const rawVotingLocations = await voterViewApi.findVotingLocationsByStreetAddress(streetNumber, streetName);
+    const rawVotingLocations = await voterViewApi.getVotingLocationsByStreetAddress(streetNumber, streetName);
     const votingLocations = rawVotingLocations.map((votingLocation) => ({
         Address1: votingLocation.Address1,
         Address2: votingLocation.Address2,

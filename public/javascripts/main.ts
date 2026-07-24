@@ -1,6 +1,6 @@
 /* eslint-disable no-secrets/no-secrets */
-import type { DoGetAddressDetailsResponse } from '../../handlers/doGetAddressDetails.js'
-import type { DoGetAddressesResponse } from '../../handlers/doGetAddresses.js'
+import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.js'
+import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.js'
 
 ;(() => {
   const addressSearchFieldElement = document.querySelector<HTMLInputElement>(
@@ -378,7 +378,7 @@ import type { DoGetAddressesResponse } from '../../handlers/doGetAddresses.js'
 
   const debouncedAddressSearch = debounce(() => {
     void doAddressSearch()
-  }, 250)
+  }, 200)
 
   addressSearchFieldElement?.addEventListener('focus', () => {
     addressSearchResultsElement?.classList.remove('is-hidden')
@@ -387,4 +387,36 @@ import type { DoGetAddressesResponse } from '../../handlers/doGetAddresses.js'
   addressSearchFieldElement?.addEventListener('input', debouncedAddressSearch)
 
   void doAddressSearch()
+})()
+
+// Modals
+
+;(() => {
+  const votersListModalElement =
+    document.querySelector<HTMLDivElement>('#modal--votersList')
+
+  document
+    .querySelector<HTMLButtonElement>('#button--votersList')
+    ?.addEventListener('click', () => {
+      votersListModalElement?.classList.add('is-active')
+      document.documentElement.classList.add('is-clipped')
+
+      votersListModalElement?.querySelector('iframe')?.setAttribute('src', 'votersList')
+    })
+
+  function closeModal(clickEvent: MouseEvent): void {
+    clickEvent.preventDefault()
+
+    ;(clickEvent.currentTarget as HTMLButtonElement)
+      .closest('.modal')
+      ?.classList.remove('is-active')
+
+    document.documentElement.classList.remove('is-clipped')
+  }
+
+  for (const closeButtonElement of document.querySelectorAll<HTMLButtonElement>(
+    '.modal-background, .modal-close-button'
+  )) {
+    closeButtonElement.addEventListener('click', closeModal)
+  }
 })()

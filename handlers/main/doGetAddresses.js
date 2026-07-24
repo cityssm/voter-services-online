@@ -1,5 +1,5 @@
 import { NodeCache } from '@cacheable/node-cache';
-import { voterViewApi } from '../helpers/api.helpers.js';
+import { voterViewApi } from '../../helpers/api.helpers.js';
 const addressesCache = new NodeCache({
     stdTTL: 2 * 60
 });

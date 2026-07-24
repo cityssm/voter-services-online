@@ -4,7 +4,8 @@ import express from 'express';
 import createError from 'http-errors';
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js';
 import * as configFunctions from '../helpers/config.helpers.js';
-import router from '../routes/router.js';
+import router_main from '../routes/main.router.js';
+import router_votersList from '../routes/votersList.router.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`);
 export const app = express();
 app.use((request, _response, next) => {
@@ -34,7 +35,8 @@ app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
     .use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'));
-app.use(`${urlPrefix}/`, router);
+app.use(`${urlPrefix}/votersList`, router_votersList);
+app.use(`${urlPrefix}/`, router_main);
 app.use((_request, _response, next) => {
     next(createError(404));
 });

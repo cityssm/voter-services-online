@@ -224,10 +224,30 @@
     }
     const debouncedAddressSearch = debounce(() => {
         void doAddressSearch();
-    }, 250);
+    }, 200);
     addressSearchFieldElement?.addEventListener('focus', () => {
         addressSearchResultsElement?.classList.remove('is-hidden');
     });
     addressSearchFieldElement?.addEventListener('input', debouncedAddressSearch);
     void doAddressSearch();
+})();
+(() => {
+    const votersListModalElement = document.querySelector('#modal--votersList');
+    document
+        .querySelector('#button--votersList')
+        ?.addEventListener('click', () => {
+        votersListModalElement?.classList.add('is-active');
+        document.documentElement.classList.add('is-clipped');
+        votersListModalElement?.querySelector('iframe')?.setAttribute('src', 'votersList');
+    });
+    function closeModal(clickEvent) {
+        clickEvent.preventDefault();
+        clickEvent.currentTarget
+            .closest('.modal')
+            ?.classList.remove('is-active');
+        document.documentElement.classList.remove('is-clipped');
+    }
+    for (const closeButtonElement of document.querySelectorAll('.modal-background, .modal-close-button')) {
+        closeButtonElement.addEventListener('click', closeModal);
+    }
 })();

@@ -1,13 +1,9 @@
 import type { Request, Response } from 'express'
 
-import configFunctions from '../helpers/config.helpers.js'
-import packageJson from '../package.json' with { type: 'json' }
-
-export const version = packageJson.version
+import configFunctions from '../../helpers/config.helpers.js'
 
 export default function handler(_request: Request, response: Response): void {
-  response.render('main', {
-    buildNumber: version,
+  response.render('votersListCheck', {
     configFunctions,
     urlPrefix: configFunctions.getConfigProperty('reverseProxy.urlPrefix')
   })

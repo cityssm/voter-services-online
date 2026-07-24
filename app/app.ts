@@ -5,7 +5,8 @@ import createError, { type HttpError } from 'http-errors'
 
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
 import * as configFunctions from '../helpers/config.helpers.js'
-import router from '../routes/router.js'
+import router_main from '../routes/main.router.js'
+import router_votersList from '../routes/votersList.router.js'
 
 const debug = Debug(
   `${DEBUG_NAMESPACE}:app:${process.pid.toString().padEnd(PROCESS_ID_MAX_DIGITS)}`
@@ -84,7 +85,8 @@ app
  * ROUTES
  */
 
-app.use(`${urlPrefix}/`, router)
+app.use(`${urlPrefix}/votersList`, router_votersList)
+app.use(`${urlPrefix}/`, router_main)
 
 /*
  * Error handling

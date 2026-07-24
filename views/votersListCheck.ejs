@@ -1,0 +1,154 @@
+<!doctype html>
+<html data-theme="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>
+      Am I On the Voter's List:
+      <%= configFunctions.getConfigProperty('application.applicationName') %>
+    </title>
+
+    <link href="<%= urlPrefix %>/lib/bulma/bulma.min.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <form>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="votersList--firstName">
+              First Name
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--firstName"
+                name="firstName"
+                type="text"
+                maxlength="40"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="votersList--lastName">
+              Last Name
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--lastName"
+                name="lastName"
+                type="text"
+                maxlength="40"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="label">Date of Birth</p>
+      <div class="columns">
+        <div class="column is-4">
+          <div class="field">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  id="votersList--dateOfBirthMonth"
+                  name="dateOfBirthMonth"
+                  aria-label="Date of Birth Month"
+                  required
+                >
+                  <option value="">Month</option>
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="field">
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--dateOfBirthDay"
+                name="dateOfBirthDay"
+                type="number"
+                min="1"
+                max="31"
+                aria-label="Date of Birth Day"
+                placeholder="Day"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="field">
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--dateOfBirthYear"
+                name="dateOfBirthYear"
+                type="number"
+                min="1800"
+                max="<%= new Date().getFullYear() %>"
+                aria-label="Date of Birth Year"
+                placeholder="Year"
+                required
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="label">Civic Address</p>
+
+      <div class="columns">
+        <div class="column is-3">
+          <div class="field">
+            <label class="label" for="votersList--streetNumber">
+              Street Number
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--streetNumber"
+                name="streetNumber"
+                type="text"
+                maxlength="5"
+                pattern="[0-9]+"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div class="column is-6">
+          
+        </div>
+      </div>
+    </form>
+
+    <script src="<%= urlPrefix %>/javascripts/votersList.js"></script>
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
+  </body>
+</html>

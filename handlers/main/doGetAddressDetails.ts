@@ -5,7 +5,7 @@ import type {
 } from '@cityssm/voterview-api/types'
 import type { Request, Response } from 'express'
 
-import { voterViewApi } from '../helpers/api.helpers.js'
+import { voterViewApi } from '../../helpers/api.helpers.js'
 
 interface DoGetAddressDetailsRequest {
   ward?: string
@@ -61,7 +61,7 @@ export default async function handler(
    */
 
   const rawVotingLocations =
-    await voterViewApi.findVotingLocationsByStreetAddress(
+    await voterViewApi.getVotingLocationsByStreetAddress(
       streetNumber,
       streetName
     )

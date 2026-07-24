@@ -16,16 +16,27 @@
   </head>
 
   <body>
-    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <span class="navbar-item">
-          <%= configFunctions.getConfigProperty("application.applicationName")
-          %>
-        </span>
+    <nav class="level has-background-dark p-4" role="navigation" aria-label="main navigation">
+      <div class="level-left">
+        <div class="level-item has-text-white">
+          <%= configFunctions.getConfigProperty("application.applicationName") %>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <div class="buttons is-justify-content-center">
+            <button class="button is-success" id="button--votersList" type="button">
+              Am I On the Voter's List?
+            </button>
+            <button class="button is-success" id="button--voteByMail" type="button">
+              Vote By Mail Registration
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="section pt-4">
+    <div class="px-4">
       <main class="columns">
         <aside class="column is-5">
           <form class="mb-4" id="form--addressSearch">
@@ -82,6 +93,29 @@
           </div>
         </section>
       </main>
+    </div>
+
+    <div class="modal" id="modal--votersList">
+      <div class="modal-background"></div>
+      <div class="modal-card" style="width:900px;max-width:100%;">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Am I On the Voter's List?</p>
+          <button class="delete modal-close-button" type="button" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <iframe
+            id="iframe--votersList"
+            src="#"
+            title="Am I On the Voter's List?"
+            style="border: none"
+            height="600"
+            width="100%"
+          ></iframe>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button modal-close-button" type="button">Close</button>
+        </footer>
+      </div>
     </div>
     
     <script src="<%= urlPrefix %>/javascripts/main.js"></script>
