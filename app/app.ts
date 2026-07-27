@@ -82,6 +82,13 @@ app
   )
 
 /*
+ * LOCALS
+ */
+
+app.locals.configFunctions = configFunctions
+app.locals.urlPrefix = urlPrefix
+
+/*
  * ROUTES
  */
 

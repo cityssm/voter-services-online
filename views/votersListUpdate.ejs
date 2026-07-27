@@ -1,0 +1,88 @@
+<!doctype html>
+<html data-theme="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>
+      Am I On the Voter's List:
+      <%= configFunctions.getConfigProperty('application.applicationName') %>
+    </title>
+
+    <link href="<%= urlPrefix %>/lib/bulma/bulma.min.css" rel="stylesheet" />
+    <link href="<%= urlPrefix %>/stylesheets/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <% if (voterRecord.Found) { %>
+    <div class="notification is-success">
+      <p>
+        <strong>Yes!</strong> You are on the voter's list.
+      </p>
+    </div>
+    <% } else { %>
+    <div class="notification is-danger">
+      <p>
+        <strong>No!</strong> You are not on the voter's list.
+      </p>
+    </div>
+    <% } %>
+
+    <div class="panel">
+      <div class="panel-heading">Your Information</div>
+      <div class="panel-block is-block">
+        <div class="columns">
+          <div class="column">
+            <p class="label">Name</p>
+            <p><%= voterRecord.FullName %></p>
+          </div>
+          <div class="column">
+            <p class="label">Birth Date</p>
+            <p><%= voterRecord.DateOfBirth %></p>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-block">
+        <p class="label">Property Address</p>
+        <p><%= voterRecord.PropertyAddress %></p>
+      </div>
+    </div>
+    <% if (voterRecord.Found) { %>
+    <div>
+      <button class="button is-block is-warning" type="button">
+        Update Your Information
+      </button>
+      <p>
+        If your information is incorrect or has changed,
+        please update your information.
+      </p>
+    </div>
+    <% } else { %>
+    <div class="columns is-mobile">
+      <div class="column">
+        <a class="button is-block is-success" href="<%= urlPrefix %>/votersList">
+          Search Again
+        </a>
+        <p>
+          Try again with different spelling, your full first name,
+          or your previous address.
+        </p>
+      </div>
+      <div class="column">
+        <button class="button is-block is-warning" type="button">
+          Register to Vote
+        </button>
+        <p>
+          Register to be added to the voter's list.
+        </p>
+      </div>
+    </div>
+    <% } %>
+
+    <script src="<%= urlPrefix %>/javascripts/all.js"></script>
+    <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
+  </body>
+</html>

@@ -1,4 +1,3 @@
-import { NodeCache } from '@cacheable/node-cache'
 import type { StreetAddress } from '@cityssm/voterview-api/types'
 import type { Request, Response } from 'express'
 
@@ -20,10 +19,6 @@ export type DoGetAddressesResponse = {
   >
 }
 
-const addressesCache = new NodeCache<DoGetAddressesResponse['addresses']>({
-  stdTTL: 2 * 60 // 2 minutes
-})
-
 export default async function handler(
   request: Request<unknown, unknown, unknown, DoGetAddressesRequest>,
   response: Response
@@ -32,28 +27,22 @@ export default async function handler(
     .trim()
     .toLocaleLowerCase()
 
-  let addresses = addressesCache.get(civicAddress)
+  const rawAddresses = await voterViewApi.getStreetAddresses(civicAddress)
 
-  if (addresses === undefined) {
-    const rawAddresses = await voterViewApi.getStreetAddresses(civicAddress)
-
-    addresses = rawAddresses
-      .filter((address) => address.UnitNumber === '')
-      .toSorted((streetAddressA, streetAddressB) =>
-        streetAddressA.Address.localeCompare(streetAddressB.Address)
-      )
-      .slice(0, 10)
-      .map((address) => ({
-        Address: address.Address,
-        PollAndSuffix: address.PollAndSuffix,
-        StreetNameFull:
-          `${address.StreetName} ${address.StreetType} ${address.StreetDirection}`.trim(),
-        StreetNumber: address.StreetNumber,
-        Ward: address.Ward
-      }))
-
-    addressesCache.set(civicAddress, addresses)
-  }
+  const addresses = rawAddresses
+    .filter((address) => address.UnitNumber === '')
+    .toSorted((streetAddressA, streetAddressB) =>
+      streetAddressA.Address.localeCompare(streetAddressB.Address)
+    )
+    .slice(0, 10)
+    .map((address) => ({
+      Address: address.Address,
+      PollAndSuffix: address.PollAndSuffix,
+      StreetNameFull:
+        `${address.StreetName} ${address.StreetType} ${address.StreetDirection}`.trim(),
+      StreetNumber: address.StreetNumber,
+      Ward: address.Ward
+    }))
 
   response.json({
     addresses

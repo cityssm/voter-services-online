@@ -35,6 +35,8 @@ app
     .use(urlPrefix, express.static('public'))
     .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
     .use(`${urlPrefix}/lib/fa`, express.static('node_modules/@fortawesome/fontawesome-free'));
+app.locals.configFunctions = configFunctions;
+app.locals.urlPrefix = urlPrefix;
 app.use(`${urlPrefix}/votersList`, router_votersList);
 app.use(`${urlPrefix}/`, router_main);
 app.use((_request, _response, next) => {

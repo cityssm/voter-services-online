@@ -1,8 +1,4 @@
-import { NodeCache } from '@cacheable/node-cache';
 import { voterViewApi } from '../../helpers/api.helpers.js';
-const positionsCache = new NodeCache({
-    stdTTL: 2 * 60
-});
 export default async function handler(request, response) {
     const ward = request.query.ward ?? '';
     const streetName = request.query.streetName ?? '';
@@ -19,18 +15,14 @@ export default async function handler(request, response) {
         MapLink: votingLocation.MapLink,
         StartTime: votingLocation.StartTime
     }));
-    let positions = positionsCache.get(ward);
-    if (positions === undefined) {
-        const rawCandidateList = await voterViewApi.getCandidateListByWard(ward);
-        positions = rawCandidateList.Positions.map((position) => ({
-            NumberPositions: position.NumberPositions,
-            PositionName: position.PositionName,
-            Candidates: position.Candidates.map((candidate) => ({
-                CandidateName: candidate.CandidateName
-            }))
-        }));
-        positionsCache.set(ward, positions);
-    }
+    const rawCandidateList = await voterViewApi.getCandidateListByWard(ward);
+    const positions = rawCandidateList.Positions.map((position) => ({
+        NumberPositions: position.NumberPositions,
+        PositionName: position.PositionName,
+        Candidates: position.Candidates.map((candidate) => ({
+            CandidateName: candidate.CandidateName
+        }))
+    }));
     response.json({
         positions,
         votingLocations

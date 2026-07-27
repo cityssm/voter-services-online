@@ -1,4 +1,3 @@
-import { NodeCache } from '@cacheable/node-cache'
 import type {
   CandidateList,
   VotingLocation
@@ -44,10 +43,6 @@ export type DoGetAddressDetailsResponse = {
   }>
 }
 
-const positionsCache = new NodeCache<DoGetAddressDetailsResponse['positions']>({
-  stdTTL: 2 * 60 // 2 minutes
-})
-
 export default async function handler(
   request: Request<unknown, unknown, unknown, DoGetAddressDetailsRequest>,
   response: Response
@@ -82,22 +77,16 @@ export default async function handler(
    * Get Positions
    */
 
-  let positions = positionsCache.get(ward)
+  const rawCandidateList = await voterViewApi.getCandidateListByWard(ward)
 
-  if (positions === undefined) {
-    const rawCandidateList = await voterViewApi.getCandidateListByWard(ward)
+  const positions = rawCandidateList.Positions.map((position) => ({
+    NumberPositions: position.NumberPositions,
+    PositionName: position.PositionName,
 
-    positions = rawCandidateList.Positions.map((position) => ({
-      NumberPositions: position.NumberPositions,
-      PositionName: position.PositionName,
-
-      Candidates: position.Candidates.map((candidate) => ({
-        CandidateName: candidate.CandidateName
-      }))
+    Candidates: position.Candidates.map((candidate) => ({
+      CandidateName: candidate.CandidateName
     }))
-
-    positionsCache.set(ward, positions)
-  }
+  }))
 
   response.json({
     positions,

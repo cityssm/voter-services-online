@@ -210,19 +210,7 @@
         formSubmitEvent.preventDefault();
         void doAddressSearch();
     });
-    function debounce(functionToDebounce, waitMillis) {
-        let timeout;
-        return function (..._arguments) {
-            const context = this;
-            const later = function () {
-                timeout = undefined;
-                functionToDebounce.apply(context, _arguments);
-            };
-            globalThis.clearTimeout(timeout);
-            timeout = setTimeout(later, waitMillis);
-        };
-    }
-    const debouncedAddressSearch = debounce(() => {
+    const debouncedAddressSearch = voterServices.debounce(() => {
         void doAddressSearch();
     }, 200);
     addressSearchFieldElement?.addEventListener('focus', () => {
@@ -236,9 +224,14 @@
     document
         .querySelector('#button--votersList')
         ?.addEventListener('click', () => {
+        votersListModalElement
+            ?.querySelector('iframe')
+            ?.setAttribute('src', 'about:blank');
         votersListModalElement?.classList.add('is-active');
         document.documentElement.classList.add('is-clipped');
-        votersListModalElement?.querySelector('iframe')?.setAttribute('src', 'votersList');
+        votersListModalElement
+            ?.querySelector('iframe')
+            ?.setAttribute('src', 'votersList');
     });
     function closeModal(clickEvent) {
         clickEvent.preventDefault();
@@ -246,6 +239,9 @@
             .closest('.modal')
             ?.classList.remove('is-active');
         document.documentElement.classList.remove('is-clipped');
+        votersListModalElement
+            ?.querySelector('iframe')
+            ?.setAttribute('src', 'about:blank');
     }
     for (const closeButtonElement of document.querySelectorAll('.modal-background, .modal-close-button')) {
         closeButtonElement.addEventListener('click', closeModal);

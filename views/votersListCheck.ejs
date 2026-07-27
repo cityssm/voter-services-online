@@ -17,14 +17,14 @@
   </head>
 
   <body>
-    <form>
+    <form action="votersList/result" method="POST">
       <div class="columns">
         <div class="column">
           <div class="field">
             <label class="label" for="votersList--firstName">
               First Name
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input
                 class="input"
                 id="votersList--firstName"
@@ -33,6 +33,9 @@
                 maxlength="40"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -41,7 +44,7 @@
             <label class="label" for="votersList--lastName">
               Last Name
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input
                 class="input"
                 id="votersList--lastName"
@@ -50,6 +53,9 @@
                 maxlength="40"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -59,7 +65,7 @@
       <div class="columns">
         <div class="column is-4">
           <div class="field">
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <div class="select is-fullwidth">
                 <select
                   id="votersList--dateOfBirthMonth"
@@ -67,7 +73,7 @@
                   aria-label="Date of Birth Month"
                   required
                 >
-                  <option value="">Month</option>
+                  <option value="">(Select a Month)</option>
                   <option value="1">January</option>
                   <option value="2">February</option>
                   <option value="3">March</option>
@@ -82,12 +88,15 @@
                   <option value="12">December</option>
                 </select>
               </div>
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
         <div class="column is-4">
           <div class="field">
-            <div class="control">
+            <div class="control has-icons-right">
               <input
                 class="input"
                 id="votersList--dateOfBirthDay"
@@ -99,12 +108,15 @@
                 placeholder="Day"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
         <div class="column is-4">
           <div class="field">
-            <div class="control">
+            <div class="control has-icons-right">
               <input
                 class="input"
                 id="votersList--dateOfBirthYear"
@@ -116,6 +128,9 @@
                 placeholder="Year"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -143,12 +158,53 @@
           </div>
         </div>
         <div class="column is-6">
-          
+          <div class="field">
+            <label class="label" for="votersList--streetName">
+              Street Name
+            </label>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  id="votersList--streetName"
+                  name="streetName"
+                  aria-label="Street Name"
+                  required
+                >
+                  <option value="">(Select a street name)</option>
+                  <% streetNames.forEach((streetName) => { %>
+                  <option value="<%= streetName %>"><%= streetName %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="votersList--unitNumber">
+              Unit
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="votersList--unitNumber"
+                name="unitNumber"
+                type="text"
+                maxlength="10"
+              />
+            </div>
+          </div>
         </div>
       </div>
+
+      <p class="has-text-right">
+        <button class="button is-success" id="votersList--submit" type="submit">
+          Lookup Voter's List Record
+        </button>
+      </p>
     </form>
 
-    <script src="<%= urlPrefix %>/javascripts/votersList.js"></script>
+    <script src="<%= urlPrefix %>/javascripts/all.js"></script>
     <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
   </body>
 </html>

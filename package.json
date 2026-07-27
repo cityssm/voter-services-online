@@ -23,7 +23,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@cacheable/node-cache": "^3.1.1",
+    "@cityssm/civic-address-format": "^1.1.0",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/voterview-api": "file:../node-voterview-api",
     "@fortawesome/fontawesome-free": "^7.3.1",

@@ -1,7 +1,10 @@
-import configFunctions from '../../helpers/config.helpers.js';
-export default function handler(_request, response) {
+import { voterViewApi } from '../../helpers/api.helpers.js';
+export default async function handler(_request, response) {
+    const streetNamesResult = await voterViewApi.getAllStreetNames();
+    const streetNames = streetNamesResult
+        .map((streetName) => streetName.Label)
+        .toSorted((a, b) => a.localeCompare(b));
     response.render('votersListCheck', {
-        configFunctions,
-        urlPrefix: configFunctions.getConfigProperty('reverseProxy.urlPrefix')
+        streetNames
     });
 }
