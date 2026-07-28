@@ -1,6 +1,7 @@
 /* eslint-disable no-secrets/no-secrets */
-import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.js'
-import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.js'
+
+import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.handler.js'
+import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.handler.js'
 
 declare const voterServices: {
   debounce: (functionToDebounce: () => void, waitMillis: number) => () => void
@@ -152,22 +153,59 @@ declare const voterServices: {
 
         const positionElement = document.createElement('div')
         positionElement.className = 'panel'
-        positionElement.innerHTML = '<p class="panel-heading"></p>'
+        positionElement.innerHTML = /* html */ `
+          <div class="panel-heading">
+            <div class="columns is-mobile">
+              <div class="column">
+                <span class="field--positionName"></span>
+              </div>
+              <div class="column is-narrow has-text-right">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">Positions Available</span>
+                  <span class="tag field--numberPositions"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
 
         ;(
-          positionElement.querySelector('.panel-heading') as HTMLElement
+          positionElement.querySelector('.field--positionName') as HTMLElement
         ).textContent = position.PositionName
+
+        ;(
+          positionElement.querySelector(
+            '.field--numberPositions'
+          ) as HTMLElement
+        ).textContent = position.NumberPositions.toString()
 
         for (const candidate of position.Candidates) {
           const panelBlockElement = document.createElement('div')
 
-          panelBlockElement.className = 'panel-block'
+          panelBlockElement.className = 'panel-block is-block'
 
-          if (position.NumberPositions >= position.Candidates.length) {
-            panelBlockElement.classList.add('has-background-info-light')
-          }
+          // eslint-disable-next-line no-unsanitized/property
+          panelBlockElement.innerHTML = /* html */ `
+            <div class="columns is-mobile">
+              <div class="column">
+                <span class="field--candidateName"></span>
+              </div>
+              <div class="column is-narrow has-text-right">
+                ${
+                  candidate.IsAcclaimed ||
+                  position.NumberPositions >= position.Candidates.length
+                    ? '<span class="tag is-success">Acclaimed</span>'
+                    : ''
+                }
+              </div>
+            </div>
+          `
 
-          panelBlockElement.textContent = candidate.CandidateName
+          ;(
+            panelBlockElement.querySelector(
+              '.field--candidateName'
+            ) as HTMLElement
+          ).textContent = candidate.CandidateName
 
           positionElement.append(panelBlockElement)
         }

@@ -12,7 +12,10 @@ export const configDefaultValues = {
   'voterViewApi.countyMunicipalityCode': '',
   'voterViewApi.password': '',
   'voterViewApi.username': '',
-  'voterViewApi.useTrainingDatabase': false
+  'voterViewApi.useTrainingDatabase': false,
+
+  'settings.defaultCity': '',
+  'settings.defaultProvince': 'ON'
 }
 
 export default configDefaultValues

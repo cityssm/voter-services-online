@@ -37,7 +37,7 @@ export type DoGetAddressDetailsResponse = {
     Candidates: Array<
       Pick<
         CandidateList['Positions'][number]['Candidates'][number],
-        'CandidateName'
+        'CandidateName' | 'IsAcclaimed'
       >
     >
   }>
@@ -84,7 +84,8 @@ export default async function handler(
     PositionName: position.PositionName,
 
     Candidates: position.Candidates.map((candidate) => ({
-      CandidateName: candidate.CandidateName
+      CandidateName: candidate.CandidateName,
+      IsAcclaimed: candidate.IsAcclaimed
     }))
   }))
 

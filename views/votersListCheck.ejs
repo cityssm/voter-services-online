@@ -24,7 +24,7 @@
             <label class="label" for="votersList--firstName">
               First Name
             </label>
-            <div class="control has-icons-right">
+            <div class="control">
               <input
                 class="input"
                 id="votersList--firstName"
@@ -33,9 +33,6 @@
                 maxlength="40"
                 required
               />
-              <span class="icon is-small is-right">
-                <i class="fas fa-asterisk"></i>
-              </span>
             </div>
           </div>
         </div>
@@ -44,7 +41,7 @@
             <label class="label" for="votersList--lastName">
               Last Name
             </label>
-            <div class="control has-icons-right">
+            <div class="control">
               <input
                 class="input"
                 id="votersList--lastName"
@@ -53,151 +50,137 @@
                 maxlength="40"
                 required
               />
-              <span class="icon is-small is-right">
-                <i class="fas fa-asterisk"></i>
-              </span>
             </div>
           </div>
         </div>
       </div>
 
-      <p class="label">Date of Birth</p>
-      <div class="columns">
-        <div class="column is-4">
-          <div class="field">
-            <div class="control is-expanded has-icons-right">
-              <div class="select is-fullwidth">
-                <select
-                  id="votersList--dateOfBirthMonth"
-                  name="dateOfBirthMonth"
-                  aria-label="Date of Birth Month"
-                  required
-                >
-                  <option value="">(Select a Month)</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </select>
-              </div>
-              <span class="icon is-small is-right">
-                <i class="fas fa-asterisk"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="field">
-            <div class="control has-icons-right">
-              <input
-                class="input"
-                id="votersList--dateOfBirthDay"
-                name="dateOfBirthDay"
-                type="number"
-                min="1"
-                max="31"
-                aria-label="Date of Birth Day"
-                placeholder="Day"
-                required
-              />
-              <span class="icon is-small is-right">
-                <i class="fas fa-asterisk"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="field">
-            <div class="control has-icons-right">
-              <input
-                class="input"
-                id="votersList--dateOfBirthYear"
-                name="dateOfBirthYear"
-                type="number"
-                min="1800"
-                max="<%= new Date().getFullYear() %>"
-                aria-label="Date of Birth Year"
-                placeholder="Year"
-                required
-              />
-              <span class="icon is-small is-right">
-                <i class="fas fa-asterisk"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <fieldset class="mb-4">
+        <legend class="label">Date of Birth</legend>
 
-      <p class="label">Civic Address</p>
-
-      <div class="columns">
-        <div class="column is-3">
-          <div class="field">
-            <label class="label" for="votersList--streetNumber">
-              Street Number
-            </label>
-            <div class="control">
-              <input
-                class="input"
-                id="votersList--streetNumber"
-                name="streetNumber"
-                type="text"
-                maxlength="5"
-                pattern="[0-9]+"
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input
+              class="input"
+              id="votersList--dateOfBirthYear"
+              name="dateOfBirthYear"
+              type="number"
+              min="<%= new Date().getFullYear() - 120 %>"
+              max="<%= new Date().getFullYear() %>"
+              aria-label="Date of Birth Year"
+              placeholder="Year"
+              required
+            />
+          </div>
+          <div class="control">
+            <span class="button is-static">-</span>
+          </div>
+          <div class="control is-expanded">
+            <div class="select is-fullwidth">
+              <select
+                id="votersList--dateOfBirthMonth"
+                name="dateOfBirthMonth"
+                aria-label="Date of Birth Month"
                 required
-              />
+              >
+                <option value="">(Select a Month)</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
             </div>
           </div>
+          <div class="control">
+            <span class="button is-static">-</span>
+          </div>
+          <div class="control is-expanded">
+            <input
+              class="input"
+              id="votersList--dateOfBirthDay"
+              name="dateOfBirthDay"
+              type="number"
+              min="1"
+              max="31"
+              aria-label="Date of Birth Day"
+              placeholder="Day"
+              required
+            />
+          </div>
         </div>
-        <div class="column is-6">
-          <div class="field">
-            <label class="label" for="votersList--streetName">
-              Street Name
-            </label>
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select
-                  id="votersList--streetName"
-                  name="streetName"
-                  aria-label="Street Name"
+      </fieldset>
+
+
+      <fieldset>
+        <legend class="label">Civic Address</legend>
+
+        <div class="columns">
+          <div class="column is-3">
+            <div class="field">
+              <label class="label" for="votersList--streetNumber">
+                Street Number
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersList--streetNumber"
+                  name="streetNumber"
+                  type="text"
+                  maxlength="5"
+                  pattern="[0-9]+"
                   required
-                >
-                  <option value="">(Select a street name)</option>
-                  <% streetNames.forEach((streetName) => { %>
-                  <option value="<%= streetName %>"><%= streetName %></option>
-                  <% }) %>
-                </select>
+                />
               </div>
             </div>
           </div>
-        </div>
-        <div class="column">
-          <div class="field">
-            <label class="label" for="votersList--unitNumber">
-              Unit
-            </label>
-            <div class="control">
-              <input
-                class="input"
-                id="votersList--unitNumber"
-                name="unitNumber"
-                type="text"
-                maxlength="10"
-              />
+          <div class="column is-6">
+            <div class="field">
+              <label class="label" for="votersList--streetName">
+                Street Name
+              </label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersList--streetName"
+                    name="streetName"
+                    aria-label="Street Name"
+                    required
+                  >
+                    <option value="">(Loading street names...)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="votersList--unitNumber">
+                Unit
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersList--unitNumber"
+                  name="unitNumber"
+                  type="text"
+                  maxlength="10"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </fieldset>
 
-      <p class="has-text-right">
+
+      <p class="has-text-right mt-4">
         <button class="button is-success" id="votersList--submit" type="submit">
           Lookup Voter's List Record
         </button>
@@ -205,6 +188,8 @@
     </form>
 
     <script src="<%= urlPrefix %>/javascripts/all.js"></script>
+    <script src="<%= urlPrefix %>/javascripts/votersListCheck.js"></script>
+
     <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
   </body>
 </html>

@@ -17,72 +17,360 @@
   </head>
 
   <body>
-    <% if (voterRecord.Found) { %>
-    <div class="notification is-success">
-      <p>
-        <strong>Yes!</strong> You are on the voter's list.
-      </p>
-    </div>
-    <% } else { %>
-    <div class="notification is-danger">
-      <p>
-        <strong>No!</strong> You are not on the voter's list.
-      </p>
-    </div>
-    <% } %>
+    <div class="tabContainer" id="tabContainer--result">
+      <% if (voterRecord.Found) { %>
+      <div class="notification is-success">
+        <p>
+          <strong>Yes!</strong>
+          You are on the voter's list.
+        </p>
+      </div>
+      <% } else { %>
+      <div class="notification is-danger">
+        <p>
+          <strong>No!</strong>
+          You are not on the voter's list.
+        </p>
+      </div>
+      <% } %>
 
-    <div class="panel">
-      <div class="panel-heading">Your Information</div>
-      <div class="panel-block is-block">
-        <div class="columns">
-          <div class="column">
-            <p class="label">Name</p>
-            <p><%= voterRecord.FullName %></p>
-          </div>
-          <div class="column">
-            <p class="label">Birth Date</p>
-            <p><%= voterRecord.DateOfBirth %></p>
+      <div class="panel">
+        <div class="panel-heading">Your Information</div>
+        <div class="panel-block is-block">
+          <div class="columns">
+            <div class="column">
+              <p class="label">Name</p>
+              <p><%= voterRecord.FullName %></p>
+            </div>
+            <div class="column">
+              <p class="label">Birth Date</p>
+              <p><%= voterRecord.DateOfBirth %></p>
+            </div>
           </div>
         </div>
+        <div class="panel-block is-block">
+          <p class="label">Property Address</p>
+          <p><%= voterRecord.PropertyAddress %></p>
+        </div>
       </div>
-      <div class="panel-block is-block">
-        <p class="label">Property Address</p>
-        <p><%= voterRecord.PropertyAddress %></p>
-      </div>
-    </div>
-    <% if (voterRecord.Found) { %>
-    <div>
-      <button class="button is-block is-warning" type="button">
-        Update Your Information
-      </button>
-      <p>
-        If your information is incorrect or has changed,
-        please update your information.
-      </p>
-    </div>
-    <% } else { %>
-    <div class="columns is-mobile">
-      <div class="column">
-        <a class="button is-block is-success" href="<%= urlPrefix %>/votersList">
-          Search Again
-        </a>
-        <p>
-          Try again with different spelling, your full first name,
-          or your previous address.
+      <% if (voterRecord.Found) { %>
+      <div>
+        <div class="buttons is-centered">
+          <button class="button is-warning is-show-form-button" type="button">
+            Update Your Information
+          </button>
+        </div>
+        <p class="has-text-centered">
+          If your information is incorrect or has changed,
+          please update your information.
         </p>
       </div>
-      <div class="column">
-        <button class="button is-block is-warning" type="button">
-          Register to Vote
-        </button>
-        <p>
-          Register to be added to the voter's list.
-        </p>
+      <% } else { %>
+      <div class="columns is-mobile">
+        <div class="column">
+          <div class="buttons is-centered">
+            <a class="button is-info" href="<%= urlPrefix %>/votersList">
+              Search Again
+            </a>
+          </div>
+          <p class="has-text-centered">
+            Try again with different spelling, your full first name,
+            or your previous address.
+          </p>
+        </div>
+        <div class="column">
+          <div class="buttons is-centered">
+            <button class="button is-warning is-show-form-button" type="button">
+              Register to Vote
+            </button>
+          </div>
+          <p class="has-text-centered">
+            Register to be added to the voter's list.
+          </p>
+        </div>
       </div>
+      <% } %>
     </div>
-    <% } %>
+
+    <div class="tabContainer is-hidden" id="tabContainer--form">
+      <% if (voterRecord.Found) { %>
+      <h2 class="title is-4">Update Your Information</h2>
+      <% } else { %>
+      <h2 class="title is-4">Register to Vote</h2>
+      <% } %>
+
+      <form id="form--votersListUpdate">
+        <input name="voterID" type="hidden" value="<%= voterRecord.VoterID ?? '' %>" />
+        <input name="propertyID" type="hidden" value="<%= voterRecord.PropertyID ?? '' %>" />
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="votersListUpdate--firstName">
+                First Name
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersListUpdate--firstName"
+                  name="firstName"
+                  type="text"
+                  value="<%= voterRecord.FirstName ?? '' %>"
+                  maxlength="40"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="votersListUpdate--middleName">
+                Middle Name
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersListUpdate--middleName"
+                  name="middleName"
+                  type="text"
+                  value="<%= voterRecord.MiddleName ?? '' %>"
+                  maxlength="40"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="votersListUpdate--lastName">
+                Last Name
+              </label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersListUpdate--lastName"
+                  name="lastName"
+                  type="text"
+                  value="<%= voterRecord.LastName ?? '' %>"
+                  maxlength="40"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% const dateOfBirthPieces = voterRecord.DateOfBirth.split('-') %>
+        
+        <fieldset>
+          <legend class="label">Date of Birth</legend>
+
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input
+                class="input"
+                id="votersListUpdate--dateOfBirthYear"
+                name="dateOfBirthYear"
+                type="number"
+                value="<%= dateOfBirthPieces[0] ?? '' %>"
+                min="1800"
+                max="<%= new Date().getFullYear() %>"
+                aria-label="Date of Birth Year"
+                placeholder="Year"
+                required
+              />
+            </div>
+            <div class="control">
+              <span class="button is-static">-</span>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select
+                  id="votersListUpdate--dateOfBirthMonth"
+                  name="dateOfBirthMonth"
+                  aria-label="Date of Birth Month"
+                  required
+                >
+                  <option value="">(Select a Month)</option>
+                  <option value="01" <%= dateOfBirthPieces[1] === '01' ? 'selected' : '' %>>January</option>
+                  <option value="02" <%= dateOfBirthPieces[1] === '02' ? 'selected' : '' %>>February</option>
+                  <option value="03" <%= dateOfBirthPieces[1] === '03' ? 'selected' : '' %>>March</option>
+                  <option value="04" <%= dateOfBirthPieces[1] === '04' ? 'selected' : '' %>>April</option>
+                  <option value="05" <%= dateOfBirthPieces[1] === '05' ? 'selected' : '' %>>May</option>
+                  <option value="06" <%= dateOfBirthPieces[1] === '06' ? 'selected' : '' %>>June</option>
+                  <option value="07" <%= dateOfBirthPieces[1] === '07' ? 'selected' : '' %>>July</option>
+                  <option value="08" <%= dateOfBirthPieces[1] === '08' ? 'selected' : '' %>>August</option>
+                  <option value="09" <%= dateOfBirthPieces[1] === '09' ? 'selected' : '' %>>September</option>
+                  <option value="10" <%= dateOfBirthPieces[1] === '10' ? 'selected' : '' %>>October</option>
+                  <option value="11" <%= dateOfBirthPieces[1] === '11' ? 'selected' : '' %>>November</option>
+                  <option value="12" <%= dateOfBirthPieces[1] === '12' ? 'selected' : '' %>>December</option>
+                </select>
+              </div>
+            </div>
+            <div class="control">
+              <span class="button is-static">-</span>
+            </div>
+            <div class="control is-expanded">
+              <input
+                class="input"
+                id="votersListUpdate--dateOfBirthDay"
+                name="dateOfBirthDay"
+                type="number"
+                value="<%= dateOfBirthPieces[2] ?? '' %>"
+                min="1"
+                max="31"
+                aria-label="Date of Birth Day"
+                placeholder="Day"
+                required
+              />
+            </div>
+          </div>
+        </fieldset>
+
+        <hr />
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--residencyStatus" class="label">Residency Status</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--residencyStatus"
+                    name="residencyStatus"
+                    data-default-value="<%= voterRecord.ResidencyStatus ?? '' %>"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--occupancyStatus" class="label">Occupancy Status</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--occupancyStatus"
+                    name="occupancyStatus"
+                    data-default-value="<%= voterRecord.OccupancyStatus ?? '' %>"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--religion" class="label">Roman Catholic</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--religion"
+                    name="religion"
+                    data-default-value="<%= voterRecord.Religion ?? '' %>"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-8">
+            <div class="field">
+              <label for="votersListUpdate--schoolSupport" class="label">School Support</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--schoolSupport"
+                    name="schoolSupport"
+                    data-default-value="<%= voterRecord.SchoolSupport ?? '' %>"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--frenchLanguageRights" class="label">French Rights</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--frenchLanguageRights"
+                    name="frenchLanguageRights"
+                    data-default-value="<%= voterRecord.FrenchLanguageRights ?? '' %>"
+                    required
+                  ></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--preferEmailForContact" class="label">Preferred Method of Contact</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select
+                    id="votersListUpdate--preferEmailForContact"
+                    name="preferEmailForContact"
+                    required
+                  >
+                    <option value="">(Select a Method)</option>
+                    <option value="0">Email</option>
+                    <option value="1">Mail</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label for="votersListUpdate--email" class="label">Email Address</label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersListUpdate--email"
+                  name="email"
+                  type="email"
+                  value="<%= voterRecord.Email ?? '' %>"
+                  maxlength="120"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label for="votersListUpdate--phoneNumber" class="label">Phone Number</label>
+              <div class="control">
+                <input
+                  class="input"
+                  id="votersListUpdate--phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  value="<%= voterRecord.PhoneNumber ?? '' %>"
+                  maxlength="15"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <fieldset>
+          <legend class="label">Residential Address</legend>
+        </fieldset>
+      </form>
+    </div>
 
     <script src="<%= urlPrefix %>/javascripts/all.js"></script>
+    <script src="<%= urlPrefix %>/javascripts/votersListUpdate.js"></script>
+
     <script src="<%= urlPrefix %>/lib/fa/js/all.min.js" defer></script>
   </body>
 </html>

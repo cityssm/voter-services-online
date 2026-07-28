@@ -27,5 +27,10 @@ export interface Config {
     username: string
     password: string
     useTrainingDatabase?: boolean
+  },
+
+  settings?: {
+    defaultCity?: string
+    defaultProvince?: string
   }
 }

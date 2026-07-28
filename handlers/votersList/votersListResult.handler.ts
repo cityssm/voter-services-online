@@ -5,6 +5,7 @@ import type { Request, Response } from 'express'
 
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
 import { voterViewApi } from '../../helpers/api.helpers.js'
+import { getConfigProperty } from '../../helpers/config.helpers.js'
 
 interface VotersListResultRequest {
   firstName: string
@@ -60,6 +61,10 @@ export default async function handler(
   voterRecord.StreetName = request.body.streetName.trim()
   voterRecord.StreetNumber = request.body.streetNumber.trim()
   voterRecord.Unit = request.body.unitNumber.trim()
+
+  voterRecord.City ??= getConfigProperty('settings.defaultCity')
+  voterRecord.Province ??= getConfigProperty('settings.defaultProvince')
+  voterRecord.Country ??= 'Canada'
 
   debug('Voter Record: %O', voterRecord)
 

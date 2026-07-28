@@ -20,7 +20,8 @@ export default async function handler(request, response) {
         NumberPositions: position.NumberPositions,
         PositionName: position.PositionName,
         Candidates: position.Candidates.map((candidate) => ({
-            CandidateName: candidate.CandidateName
+            CandidateName: candidate.CandidateName,
+            IsAcclaimed: candidate.IsAcclaimed
         }))
     }));
     response.json({
