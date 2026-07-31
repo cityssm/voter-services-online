@@ -1,6 +1,17 @@
 (() => {
+    document
+        .querySelector('.is-show-form-button')
+        ?.addEventListener('click', () => {
+        document
+            .querySelector('#tabContainer--result')
+            ?.classList.add('is-hidden');
+        document
+            .querySelector('#tabContainer--form')
+            ?.classList.remove('is-hidden');
+        voterServices.resizeParentIFrame?.();
+    });
     async function doLoadVoterDetailLists() {
-        await fetch('doGetVoterDetailLists')
+        await fetch(`${voterServices.urlPrefix}/votersList/doGetVoterDetailLists`)
             .then(async (response) => (await response.json()))
             .then((voterDetailListsResponse) => {
             const residencyStatusSelectElement = document.querySelector('#votersListUpdate--residencyStatus');
@@ -75,15 +86,98 @@
         });
     }
     void doLoadVoterDetailLists();
+    void voterServices.doLoadStreetNames(() => {
+        const streetNameSelectElement = document.querySelector('#votersListUpdate--streetName');
+        if (streetNameSelectElement !== null) {
+            const defaultStreetName = streetNameSelectElement.dataset.defaultValue;
+            if (defaultStreetName !== undefined) {
+                const optionElement = streetNameSelectElement.querySelector(`option[value="${CSS.escape(defaultStreetName)}"]`);
+                if (optionElement !== null) {
+                    optionElement.selected = true;
+                }
+            }
+        }
+    });
+    const preferredContactMethodSelectElement = document.querySelector('#votersListUpdate--preferredContactMethod');
+    preferredContactMethodSelectElement?.addEventListener('change', () => {
+        const phoneNumberInputElement = document.querySelector('#votersListUpdate--phoneNumber');
+        if (preferredContactMethodSelectElement.value === 'Phone') {
+            phoneNumberInputElement?.setAttribute('required', 'true');
+        }
+        else {
+            phoneNumberInputElement?.removeAttribute('required');
+        }
+    });
+    const countrySelectElement = document.querySelector('#votersListUpdate--mailingCountry');
+    const provinceCanadaSelectElement = document.querySelector('#votersListUpdate--mailingProvinceCanada');
+    const provinceOtherInputElement = document.querySelector('#votersListUpdate--mailingProvinceOther');
+    function toggleProvinceInput() {
+        if (countrySelectElement === null ||
+            provinceCanadaSelectElement === null ||
+            provinceOtherInputElement === null) {
+            return;
+        }
+        const isCanada = countrySelectElement.selectedOptions[0].dataset.isCanada === 'true';
+        if (isCanada) {
+            provinceCanadaSelectElement.removeAttribute('disabled');
+            provinceCanadaSelectElement
+                .closest('.field')
+                ?.classList.remove('is-hidden');
+            provinceOtherInputElement.setAttribute('disabled', 'true');
+            provinceOtherInputElement.closest('.field')?.classList.add('is-hidden');
+        }
+        else {
+            provinceCanadaSelectElement.setAttribute('disabled', 'true');
+            provinceCanadaSelectElement.closest('.field')?.classList.add('is-hidden');
+            provinceOtherInputElement.removeAttribute('disabled');
+            provinceOtherInputElement.closest('.field')?.classList.remove('is-hidden');
+        }
+    }
+    countrySelectElement?.addEventListener('change', toggleProvinceInput);
     document
-        .querySelector('.is-show-form-button')
+        .querySelector('#votersListUpdate--copyResidentialAddress')
         ?.addEventListener('click', () => {
-        document
-            .querySelector('#tabContainer--result')
-            ?.classList.add('is-hidden');
-        document
-            .querySelector('#tabContainer--form')
-            ?.classList.remove('is-hidden');
-        voterServices.resizeParentIFrame();
+        const residentialStreetNumberInputElement = document.querySelector('#votersListUpdate--streetNumber');
+        const residentialStreetNumberSuffixInputElement = document.querySelector('#votersListUpdate--streetNumberSuffix');
+        const residentialStreetNameSelectElement = document.querySelector('#votersListUpdate--streetName');
+        const residentialUnitNumberInputElement = document.querySelector('#votersListUpdate--unitNumber');
+        const address1InputElement = document.querySelector('#votersListUpdate--mailingAddress1');
+        let address = residentialStreetNumberInputElement.value;
+        if (residentialStreetNumberSuffixInputElement.value !== '') {
+            address += ` ${residentialStreetNumberSuffixInputElement.value}`;
+        }
+        if (residentialStreetNameSelectElement.selectedOptions[0].value !== '') {
+            address += ` ${residentialStreetNameSelectElement.selectedOptions[0].textContent}`;
+        }
+        if (residentialUnitNumberInputElement.value !== '') {
+            address += `, UNIT ${residentialUnitNumberInputElement.value}`;
+        }
+        address1InputElement.value = address;
+        const mailingCityInputElement = document.querySelector('#votersListUpdate--mailingCity');
+        mailingCityInputElement.value =
+            mailingCityInputElement.dataset.configValue ?? '';
+        const mailingCountrySelectElement = document.querySelector('#votersListUpdate--mailingCountry');
+        mailingCountrySelectElement.value =
+            mailingCountrySelectElement.querySelector('option[data-is-canada="true"]')?.value ?? '';
+        toggleProvinceInput();
+        const mailingProvinceCanadaSelectElement = document.querySelector('#votersListUpdate--mailingProvinceCanada');
+        mailingProvinceCanadaSelectElement.value =
+            mailingProvinceCanadaSelectElement.dataset.configValue ?? '';
+    });
+    const uploadIDFileInputElement = document.querySelector('#votersListUpdate--uploadID');
+    uploadIDFileInputElement?.addEventListener('change', () => {
+        const uploadIDFileNameElement = document.querySelector('#votersListUpdate--uploadIDFileName');
+        if (uploadIDFileNameElement !== null &&
+            uploadIDFileInputElement.files?.length === 1) {
+            const fileSizeInBytes = uploadIDFileInputElement.files[0].size;
+            if (fileSizeInBytes > 10 * 1024 * 1024) {
+                alert('The file you selected is too large. Please select a file that is less than 10 MB in size.');
+                uploadIDFileInputElement.value = '';
+                uploadIDFileNameElement.textContent = '';
+                return;
+            }
+            uploadIDFileNameElement.textContent =
+                uploadIDFileInputElement.files[0].name;
+        }
     });
 })();

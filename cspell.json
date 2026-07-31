@@ -1,0 +1,22 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "cityssm",
+    "CNIB",
+    "configurator",
+    "fontawesome",
+    "Millis",
+    "noopener",
+    "noreferrer",
+    "RHOSP",
+    "RRIF",
+    "RRSP",
+    "statscan",
+    "voterview"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

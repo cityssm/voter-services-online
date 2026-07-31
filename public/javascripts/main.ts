@@ -10,7 +10,7 @@ declare const voterServices: {
 ;(() => {
   const addressSearchFieldElement = document.querySelector<HTMLInputElement>(
     '#addressSearch--civicAddress'
-  )
+  ) as HTMLInputElement
 
   const addressSearchResultsElement = document.querySelector<HTMLDivElement>(
     '#container--addressSearchResults'
@@ -76,7 +76,7 @@ declare const voterServices: {
               <span class="field--startTime"></span> to <span class="field--endTime"></span>
             </div>
             <div class="column">
-              <div class="field--locationName"></div>
+              <div class="field--locationName has-text-weight-semibold"></div>
               <div class="field--address1"></div>
               <div class="field--address2"></div>
             </div>
@@ -97,9 +97,25 @@ declare const voterServices: {
           panelBlockElement.querySelector('.field--endTime') as HTMLElement
         ).textContent = votingLocation.EndTime
 
-        ;(
-          panelBlockElement.querySelector('.field--locationName') as HTMLElement
-        ).textContent = votingLocation.LocationName
+        if (votingLocation.MapLink === '') {
+          ;(
+            panelBlockElement.querySelector(
+              '.field--locationName'
+            ) as HTMLElement
+          ).textContent = votingLocation.LocationName
+        } else {
+          const locationLinkElement = document.createElement('a')
+          locationLinkElement.href = votingLocation.MapLink
+          locationLinkElement.target = '_blank'
+          locationLinkElement.rel = 'noopener noreferrer'
+          locationLinkElement.textContent = votingLocation.LocationName
+
+          ;(
+            panelBlockElement.querySelector(
+              '.field--locationName'
+            ) as HTMLElement
+          ).replaceChildren(locationLinkElement)
+        }
 
         ;(
           panelBlockElement.querySelector('.field--address1') as HTMLElement
@@ -192,8 +208,7 @@ declare const voterServices: {
               </div>
               <div class="column is-narrow has-text-right">
                 ${
-                  candidate.IsAcclaimed ||
-                  position.NumberPositions >= position.Candidates.length
+                  candidate.IsAcclaimed
                     ? '<span class="tag is-success">Acclaimed</span>'
                     : ''
                 }
@@ -245,15 +260,19 @@ declare const voterServices: {
     ).textContent = address.PollAndSuffix
 
     votingLocationsElement.innerHTML = /* html */ `
-      <div class="notification is-info is-light">
+      <p class="has-text-centered has-text-grey">
+        <i class="fa-solid fa-4x fa-spinner fa-spin"></i><br />
+        <br />
         <strong>Loading voting locations...</strong>
-      </div>
+      </p>
     `
 
     candidatesElement.innerHTML = /* html */ `
-      <div class="notification is-info is-light">
+      <p class="has-text-centered has-text-grey">
+        <i class="fa-solid fa-4x fa-spinner fa-spin"></i><br />
+        <br />
         <strong>Loading candidates...</strong>
-      </div>
+      </p>
     `
 
     addressDetailsElement.classList.remove('is-hidden')
@@ -281,7 +300,7 @@ declare const voterServices: {
       return
     }
 
-    const civicAddress = addressSearchFieldElement?.value ?? ''
+    const civicAddress = addressSearchFieldElement.value
 
     // eslint-disable-next-line require-unicode-regexp
     if (!/^\d/.test(civicAddress)) {
@@ -330,9 +349,7 @@ declare const voterServices: {
             clickEvent.preventDefault()
 
             // Set the address search field to the selected address
-            if (addressSearchFieldElement !== null) {
-              addressSearchFieldElement.value = address.Address
-            }
+            addressSearchFieldElement.value = address.Address
 
             // Hide the address search results
             addressSearchResultsElement.classList.add('is-hidden')
@@ -388,6 +405,16 @@ declare const voterServices: {
     .querySelector<HTMLFormElement>('#form--addressSearch')
     ?.addEventListener('submit', (formSubmitEvent) => {
       formSubmitEvent.preventDefault()
+    })
+
+  document
+    .querySelector<HTMLFormElement>('#form--addressSearch')
+    ?.addEventListener('reset', (formSubmitEvent) => {
+      formSubmitEvent.preventDefault()
+
+      addressSearchFieldElement.value = ''
+      addressSearchFieldElement.focus()
+
       void doAddressSearch()
     })
 
@@ -395,11 +422,11 @@ declare const voterServices: {
     void doAddressSearch()
   }, 200)
 
-  addressSearchFieldElement?.addEventListener('focus', () => {
+  addressSearchFieldElement.addEventListener('focus', () => {
     addressSearchResultsElement?.classList.remove('is-hidden')
   })
 
-  addressSearchFieldElement?.addEventListener('input', debouncedAddressSearch)
+  addressSearchFieldElement.addEventListener('input', debouncedAddressSearch)
 
   void doAddressSearch()
 })()
@@ -439,8 +466,9 @@ declare const voterServices: {
       ?.setAttribute('src', 'about:blank')
   }
 
+  //'.modal-background, .modal-close-button'
   for (const closeButtonElement of document.querySelectorAll<HTMLButtonElement>(
-    '.modal-background, .modal-close-button'
+    '.modal-close-button'
   )) {
     closeButtonElement.addEventListener('click', closeModal)
   }

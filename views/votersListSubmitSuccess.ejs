@@ -1,0 +1,15 @@
+<%- include('_votersListHeader.ejs') -%>
+
+<div class="message is-success">
+  <div class="message-header">
+    <p>Voter List Update Request Sent</p>
+  </div>
+  <div class="message-body">
+    <p>
+      Your voter list update request has been sent successfully.
+      Please record your confirmation code for future reference: <strong><%= confirmationCode %></strong>.
+    </p>
+  </div>
+</div>
+
+<%- include('_votersListFooter.ejs', { scriptName: '' }) -%>

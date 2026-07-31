@@ -1,3 +1,5 @@
+import type { provincesTerritoriesAlphaCodes } from '@cityssm/statscan-tools'
+
 export const configDefaultValues = {
   'application.httpPort': 9000,
 
@@ -14,8 +16,8 @@ export const configDefaultValues = {
   'voterViewApi.username': '',
   'voterViewApi.useTrainingDatabase': false,
 
-  'settings.defaultCity': '',
-  'settings.defaultProvince': 'ON'
+  'settings.city': '',
+  'settings.province': 'ON' as (typeof provincesTerritoriesAlphaCodes)[number]
 }
 
 export default configDefaultValues

@@ -1,6 +1,4 @@
-import eslintCspell from '@cspell/eslint-plugin'
 import configWebApp, { defineConfig } from 'eslint-config-cityssm'
-import { cspellWords } from 'eslint-config-cityssm/exports'
 
 export const config = defineConfig(configWebApp, {
   files: ['**/*.ts'],
@@ -9,18 +7,7 @@ export const config = defineConfig(configWebApp, {
       projectService: true
     }
   },
-  plugins: {
-    '@cspell': eslintCspell
-  },
   rules: {
-    '@cspell/spellchecker': [
-      'warn',
-      {
-        cspell: {
-          words: [...cspellWords]
-        }
-      }
-    ],
     '@typescript-eslint/no-unsafe-type-assertion': 'off'
   }
 })

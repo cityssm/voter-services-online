@@ -1,9 +1,11 @@
 import formatCivicAddress from '@cityssm/civic-address-format'
+import { isCanada } from '@cityssm/statscan-tools'
 import type { VotersListFoundRecord } from '@cityssm/voterview-api/types'
 import Debug from 'debug'
 import type { Request, Response } from 'express'
 
 import { DEBUG_NAMESPACE } from '../../debug.config.js'
+import { countries, provinces } from '../../helpers/address.helpers.js'
 import { voterViewApi } from '../../helpers/api.helpers.js'
 import { getConfigProperty } from '../../helpers/config.helpers.js'
 
@@ -50,7 +52,7 @@ export default async function handler(
   voterRecord.FullName ??= `${voterRecord.FirstName as string} ${voterRecord.LastName as string}`
 
   voterRecord.DateOfBirth ??=
-    `${request.body.dateOfBirthYear.trim()}-${request.body.dateOfBirthMonth.trim()}-${request.body.dateOfBirthDay.trim()}` as `${number}-${number}-${number}`
+    `${request.body.dateOfBirthYear.trim()}-${request.body.dateOfBirthMonth.trim()}-${request.body.dateOfBirthDay.trim().padStart(2, '0')}` as `${number}-${number}-${number}`
 
   voterRecord.PropertyAddress ??= formatCivicAddress({
     civicNumber: request.body.streetNumber.trim(),
@@ -62,13 +64,21 @@ export default async function handler(
   voterRecord.StreetNumber = request.body.streetNumber.trim()
   voterRecord.Unit = request.body.unitNumber.trim()
 
-  voterRecord.City ??= getConfigProperty('settings.defaultCity')
-  voterRecord.Province ??= getConfigProperty('settings.defaultProvince')
+  voterRecord.City ??= getConfigProperty('settings.city')
+  voterRecord.Province ??= getConfigProperty('settings.province')
   voterRecord.Country ??= 'Canada'
 
   debug('Voter Record: %O', voterRecord)
 
+  const voterRecordIsCanada = isCanada(voterRecord.Country as string)
+
   response.render('votersListUpdate', {
-    voterRecord
+    voterRecord,
+
+    countries,
+    provinces,
+    voterRecordIsCanada,
+
+    isCanada
   })
 }

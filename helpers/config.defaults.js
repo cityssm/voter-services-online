@@ -10,7 +10,7 @@ export const configDefaultValues = {
     'voterViewApi.password': '',
     'voterViewApi.username': '',
     'voterViewApi.useTrainingDatabase': false,
-    'settings.defaultCity': '',
-    'settings.defaultProvince': 'ON'
+    'settings.city': '',
+    'settings.province': 'ON'
 };
 export default configDefaultValues;

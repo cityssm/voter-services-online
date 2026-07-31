@@ -2,10 +2,9 @@
 bin/daemon/
 coverage/
 daemon/
+temp/
 
-data/config.d.ts
-data/config.js
-data/config.ts
+data/config.*
 
 node_modules/
 

@@ -1,7 +1,8 @@
-import type {
-  CandidateList,
-  VotingLocation
-} from '@cityssm/voterview-api/types'
+import {
+  type CandidateList,
+  type VotingLocation,
+  parseMicrosoftJsonDate
+} from '@cityssm/voterview-api'
 import type { Request, Response } from 'express'
 
 import { voterViewApi } from '../../helpers/api.helpers.js'
@@ -61,17 +62,45 @@ export default async function handler(
       streetName
     )
 
-  const votingLocations = rawVotingLocations.map((votingLocation) => ({
-    Address1: votingLocation.Address1,
-    Address2: votingLocation.Address2,
-    DateOpenStringLocal: votingLocation.DateOpenStringLocal,
-    EndTime: votingLocation.EndTime,
-    IsAdvancePoll: votingLocation.IsAdvancePoll,
-    IsVotingDayPoll: votingLocation.IsVotingDayPoll,
-    LocationName: votingLocation.LocationName,
-    MapLink: votingLocation.MapLink,
-    StartTime: votingLocation.StartTime
-  })) satisfies DoGetAddressDetailsResponse['votingLocations']
+  const currentDate = new Date()
+
+  const votingLocations = rawVotingLocations
+    .filter((votingLocation) => {
+      if (!votingLocation.IsAdvancePoll) {
+        return true
+      }
+
+      const dateOpen = parseMicrosoftJsonDate(votingLocation.DateOpenLocal)
+
+      if (dateOpen === undefined) {
+        return false
+      }
+
+      if (
+        dateOpen.getFullYear() === currentDate.getFullYear() &&
+        dateOpen.getMonth() === currentDate.getMonth() &&
+        dateOpen.getDate() === currentDate.getDate()
+      ) {
+        return true
+      }
+
+      if (dateOpen < currentDate) {
+        return false
+      }
+
+      return true
+    })
+    .map((votingLocation) => ({
+      Address1: votingLocation.Address1,
+      Address2: votingLocation.Address2,
+      DateOpenStringLocal: votingLocation.DateOpenStringLocal,
+      EndTime: votingLocation.EndTime,
+      IsAdvancePoll: votingLocation.IsAdvancePoll,
+      IsVotingDayPoll: votingLocation.IsVotingDayPoll,
+      LocationName: votingLocation.LocationName,
+      MapLink: votingLocation.MapLink,
+      StartTime: votingLocation.StartTime
+    })) satisfies DoGetAddressDetailsResponse['votingLocations']
 
   /*
    * Get Positions
@@ -79,7 +108,9 @@ export default async function handler(
 
   const rawCandidateList = await voterViewApi.getCandidateListByWard(ward)
 
-  const positions = rawCandidateList.Positions.map((position) => ({
+  const positions = rawCandidateList.Positions.filter(
+    (position) => position.Candidates.length > 0
+  ).map((position) => ({
     NumberPositions: position.NumberPositions,
     PositionName: position.PositionName,
 

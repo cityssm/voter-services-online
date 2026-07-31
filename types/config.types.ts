@@ -1,3 +1,5 @@
+import type { provincesTerritoriesAlphaCodes } from '@cityssm/statscan-tools'
+
 export interface Config {
   application: {
     httpPort?: number
@@ -30,7 +32,7 @@ export interface Config {
   },
 
   settings?: {
-    defaultCity?: string
-    defaultProvince?: string
+    city?: string
+    province?: typeof provincesTerritoriesAlphaCodes[number]
   }
 }

@@ -1,6 +1,8 @@
 import formatCivicAddress from '@cityssm/civic-address-format';
+import { isCanada } from '@cityssm/statscan-tools';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
+import { countries, provinces } from '../../helpers/address.helpers.js';
 import { voterViewApi } from '../../helpers/api.helpers.js';
 import { getConfigProperty } from '../../helpers/config.helpers.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:votersList:votersListResult`);
@@ -20,7 +22,7 @@ export default async function handler(request, response) {
     voterRecord.LastName ??= request.body.lastName.trim();
     voterRecord.FullName ??= `${voterRecord.FirstName} ${voterRecord.LastName}`;
     voterRecord.DateOfBirth ??=
-        `${request.body.dateOfBirthYear.trim()}-${request.body.dateOfBirthMonth.trim()}-${request.body.dateOfBirthDay.trim()}`;
+        `${request.body.dateOfBirthYear.trim()}-${request.body.dateOfBirthMonth.trim()}-${request.body.dateOfBirthDay.trim().padStart(2, '0')}`;
     voterRecord.PropertyAddress ??= formatCivicAddress({
         civicNumber: request.body.streetNumber.trim(),
         streetName: request.body.streetName.trim(),
@@ -29,11 +31,16 @@ export default async function handler(request, response) {
     voterRecord.StreetName = request.body.streetName.trim();
     voterRecord.StreetNumber = request.body.streetNumber.trim();
     voterRecord.Unit = request.body.unitNumber.trim();
-    voterRecord.City ??= getConfigProperty('settings.defaultCity');
-    voterRecord.Province ??= getConfigProperty('settings.defaultProvince');
+    voterRecord.City ??= getConfigProperty('settings.city');
+    voterRecord.Province ??= getConfigProperty('settings.province');
     voterRecord.Country ??= 'Canada';
     debug('Voter Record: %O', voterRecord);
+    const voterRecordIsCanada = isCanada(voterRecord.Country);
     response.render('votersListUpdate', {
-        voterRecord
+        voterRecord,
+        countries,
+        provinces,
+        voterRecordIsCanada,
+        isCanada
     });
 }

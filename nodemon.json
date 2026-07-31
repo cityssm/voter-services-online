@@ -2,7 +2,7 @@
   "events": {
     "start": "cls || clear"
   },
-  "ignore": ["public/javascripts/*"],
+  "ignore": ["public/javascripts/*", "cspell.json"],
   "env": {
     "NODE_ENV": "development"
   }
