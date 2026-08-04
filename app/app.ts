@@ -4,7 +4,7 @@ import express from 'express'
 import createError, { type HttpError } from 'http-errors'
 
 import { DEBUG_NAMESPACE, PROCESS_ID_MAX_DIGITS } from '../debug.config.js'
-import * as configFunctions from '../helpers/config.helpers.js'
+import configFunctions from '../helpers/config.helpers.js'
 import router_main from '../routes/main.router.js'
 import router_votersList from '../routes/votersList.router.js'
 
