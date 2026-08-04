@@ -1,0 +1,125 @@
+<!-- eslint-disable html/indent -->
+
+<%- include('_votersListHeader.ejs') -%>
+
+<div class="columns">
+  <div class="column">
+    <p>
+      <strong>Last Name</strong><br />
+      <%= lastName %>
+    </p>
+  </div>
+  <div class="column">
+    <p>
+      <strong>Confirmation Code</strong><br />
+      <%= confirmationCode %>
+    </p>
+  </div>
+</div>
+
+<hr />
+
+<% if (voterStatus.IsFound) { %>
+  <% if (voterStatus.RegistrationOnly) { %>
+    <div class="columns is-mobile is-vcentered">
+      <div class="column is-narrow">
+        <i class="fa-solid fa-check-circle has-text-success fa-2xl"></i>
+      </div>
+      <div class="column">
+        <span class="has-text-weight-semibold">Voter's List Update Request Received</span>
+      </div>
+    </div>
+  <% } else { %>
+    <% if (voterStatus.Submitted) { %>
+      <div class="columns is-mobile is-vcentered">
+        <div class="column is-narrow">
+          <i class="fa-solid fa-check-circle has-text-success fa-2xl"></i>
+        </div>
+        <div class="column">
+          <span class="has-text-weight-semibold">Application Submitted</span>
+        </div>
+        <div class="column">
+          <%= voterStatus.CleanSubmittedDateString %>
+        </div>
+      </div>
+      <hr />
+    <% } %>
+    <% if (voterStatus.Approved) { %>
+      <div class="columns is-mobile is-vcentered">
+        <div class="column is-narrow">
+          <i class="fa-solid fa-check-circle has-text-success fa-2xl"></i>
+        </div>
+        <div class="column">
+          <span class="has-text-weight-semibold">Application Approved</span>
+        </div>
+        <div class="column">
+          <%= voterStatus.CleanApprovedDateString %>
+        </div>
+      </div>
+      <hr />
+    <% } %>
+    <% if (voterStatus.Declined) { %>
+      <div class="columns is-mobile is-vcentered">
+        <div class="column is-narrow">
+          <i class="fa-solid fa-xmark-circle has-text-danger fa-2xl"></i>
+        </div>
+        <div class="column">
+          <span class="has-text-weight-semibold">Application Declined</span>
+        </div>
+        <div class="column">
+          <%= voterStatus.CleanDeclinedDateString %>
+        </div>
+      </div>
+      <hr />
+    <% } %>
+    <% if (voterStatus.Mailed) { %>
+      <div class="columns is-mobile is-vcentered">
+        <div class="column is-narrow">
+          <i class="fa-solid fa-check-circle has-text-success fa-2xl"></i>
+        </div>
+        <div class="column">
+          <span class="has-text-weight-semibold">Application Mailed</span>
+        </div>
+        <div class="column">
+          <%= voterStatus.CleanMailedDateString %>
+        </div>
+      </div>
+      <hr />
+    <% } %>
+    <% if (voterStatus.Received) { %>
+      <div class="columns is-mobile is-vcentered">
+        <div class="column is-narrow">
+          <i class="fa-solid fa-check-circle has-text-success fa-2xl"></i>
+        </div>
+        <div class="column">
+          <span class="has-text-weight-semibold">Application Received</span>
+        </div>
+        <div class="column">
+          <%= voterStatus.CleanReceivedDateString %>
+        </div>
+      </div>
+      <hr />
+    <% } %>
+  <% } %>
+<% } else { %>
+  <div class="message is-danger">
+    <div class="message-header">
+      <p>Voter List Application Record Not Found</p>
+    </div>
+    <div class="message-body">
+      <p>
+        The voter list application record you are looking for was not found.
+        Please ensure that the last name and confirmation code you entered are correct, and try again.
+      </p>
+    </div>
+  </div>
+  <hr />
+<% } %>
+
+<p class="has-text-centered">
+  <button class="button is-info" type="button" onclick="window.history.back();">
+    Go Back
+  </button>
+</p>
+
+<%- include('_votersListFooter.ejs', { scriptName: '' }) -%>
