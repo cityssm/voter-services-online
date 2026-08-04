@@ -1,4 +1,4 @@
-import formatCivicAddress from '@cityssm/civic-address-format';
+import formatCivicAddress, { postalCodeRegex } from '@cityssm/civic-address-format';
 import { isCanada } from '@cityssm/statscan-tools';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from '../../debug.config.js';
@@ -41,6 +41,7 @@ export default async function handler(request, response) {
         countries,
         provinces,
         voterRecordIsCanada,
-        isCanada
+        isCanada,
+        postalCodeRegex
     });
 }

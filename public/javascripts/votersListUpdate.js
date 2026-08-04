@@ -24,7 +24,9 @@
                     const optionElement = document.createElement('option');
                     optionElement.value = residencyStatus.ResidencyStatusCode;
                     optionElement.textContent =
-                        residencyStatus.ResidencyStatusDescription;
+                        residencyStatus.ResidencyStatusDescription === ''
+                            ? '(Select a Status)'
+                            : residencyStatus.ResidencyStatusDescription;
                     if (residencyStatus.ResidencyStatusCode ===
                         residencyStatusSelectElement.dataset.defaultValue) {
                         optionElement.selected = true;
@@ -37,7 +39,9 @@
                     const optionElement = document.createElement('option');
                     optionElement.value = occupancyStatus.OccupancyStatusCode;
                     optionElement.textContent =
-                        occupancyStatus.OccupancyStatusDescription;
+                        occupancyStatus.OccupancyStatusDescription === ''
+                            ? '(Select a Status)'
+                            : occupancyStatus.OccupancyStatusDescription;
                     if (occupancyStatus.OccupancyStatusCode ===
                         occupancyStatusSelectElement.dataset.defaultValue) {
                         optionElement.selected = true;
@@ -49,7 +53,10 @@
                 for (const religionCode of voterDetailListsResponse.religionCodes) {
                     const optionElement = document.createElement('option');
                     optionElement.value = religionCode.ReligionCode;
-                    optionElement.textContent = religionCode.ReligionDescription;
+                    optionElement.textContent =
+                        religionCode.ReligionDescription === ''
+                            ? '(Select a Status)'
+                            : religionCode.ReligionDescription;
                     if (religionCode.ReligionCode ===
                         religionCodeSelectElement.dataset.defaultValue) {
                         optionElement.selected = true;
@@ -75,7 +82,9 @@
                     const optionElement = document.createElement('option');
                     optionElement.value = frenchLanguageRights.FrenchLanguageRightsCode;
                     optionElement.textContent =
-                        frenchLanguageRights.FrenchLanguageRightsDescription;
+                        frenchLanguageRights.FrenchLanguageRightsDescription === ''
+                            ? '(Select a Status)'
+                            : frenchLanguageRights.FrenchLanguageRightsDescription;
                     if (frenchLanguageRights.FrenchLanguageRightsCode ===
                         frenchLanguageRightsSelectElement.dataset.defaultValue) {
                         optionElement.selected = true;
@@ -111,10 +120,12 @@
     const countrySelectElement = document.querySelector('#votersListUpdate--mailingCountry');
     const provinceCanadaSelectElement = document.querySelector('#votersListUpdate--mailingProvinceCanada');
     const provinceOtherInputElement = document.querySelector('#votersListUpdate--mailingProvinceOther');
+    const postalCodeInputElement = document.querySelector('#votersListUpdate--mailingPostalCode');
     function toggleProvinceInput() {
         if (countrySelectElement === null ||
             provinceCanadaSelectElement === null ||
-            provinceOtherInputElement === null) {
+            provinceOtherInputElement === null ||
+            postalCodeInputElement === null) {
             return;
         }
         const isCanada = countrySelectElement.selectedOptions[0].dataset.isCanada === 'true';
@@ -131,6 +142,13 @@
             provinceCanadaSelectElement.closest('.field')?.classList.add('is-hidden');
             provinceOtherInputElement.removeAttribute('disabled');
             provinceOtherInputElement.closest('.field')?.classList.remove('is-hidden');
+        }
+        const postalCodePattern = countrySelectElement.selectedOptions[0].dataset.postalCodePattern ?? '';
+        if (postalCodePattern === '') {
+            postalCodeInputElement.removeAttribute('pattern');
+        }
+        else {
+            postalCodeInputElement.setAttribute('pattern', postalCodePattern);
         }
     }
     countrySelectElement?.addEventListener('change', toggleProvinceInput);

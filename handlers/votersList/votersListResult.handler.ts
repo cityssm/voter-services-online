@@ -1,4 +1,4 @@
-import formatCivicAddress from '@cityssm/civic-address-format'
+import formatCivicAddress, { postalCodeRegex } from '@cityssm/civic-address-format'
 import { isCanada } from '@cityssm/statscan-tools'
 import type { VotersListFoundRecord } from '@cityssm/voterview-api/types'
 import Debug from 'debug'
@@ -79,6 +79,7 @@ export default async function handler(
     provinces,
     voterRecordIsCanada,
 
-    isCanada
+    isCanada,
+    postalCodeRegex
   })
 }

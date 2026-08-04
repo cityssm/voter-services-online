@@ -25,7 +25,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@cityssm/civic-address-format": "^1.1.0",
+    "@cityssm/civic-address-format": "^1.2.0",
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/statscan-tools": "^0.4.0",
     "@cityssm/voterview-api": "file:../node-voterview-api",

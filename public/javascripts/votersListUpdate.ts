@@ -60,7 +60,9 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
             const optionElement = document.createElement('option')
             optionElement.value = residencyStatus.ResidencyStatusCode
             optionElement.textContent =
-              residencyStatus.ResidencyStatusDescription
+              residencyStatus.ResidencyStatusDescription === ''
+                ? '(Select a Status)'
+                : residencyStatus.ResidencyStatusDescription
 
             if (
               residencyStatus.ResidencyStatusCode ===
@@ -78,7 +80,9 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
             const optionElement = document.createElement('option')
             optionElement.value = occupancyStatus.OccupancyStatusCode
             optionElement.textContent =
-              occupancyStatus.OccupancyStatusDescription
+              occupancyStatus.OccupancyStatusDescription === ''
+                ? '(Select a Status)'
+                : occupancyStatus.OccupancyStatusDescription
 
             if (
               occupancyStatus.OccupancyStatusCode ===
@@ -95,7 +99,10 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
           for (const religionCode of voterDetailListsResponse.religionCodes) {
             const optionElement = document.createElement('option')
             optionElement.value = religionCode.ReligionCode
-            optionElement.textContent = religionCode.ReligionDescription
+            optionElement.textContent =
+              religionCode.ReligionDescription === ''
+                ? '(Select a Status)'
+                : religionCode.ReligionDescription
 
             if (
               religionCode.ReligionCode ===
@@ -131,7 +138,9 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
             const optionElement = document.createElement('option')
             optionElement.value = frenchLanguageRights.FrenchLanguageRightsCode
             optionElement.textContent =
-              frenchLanguageRights.FrenchLanguageRightsDescription
+              frenchLanguageRights.FrenchLanguageRightsDescription === ''
+                ? '(Select a Status)'
+                : frenchLanguageRights.FrenchLanguageRightsDescription
 
             if (
               frenchLanguageRights.FrenchLanguageRightsCode ===
@@ -206,11 +215,16 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
     '#votersListUpdate--mailingProvinceOther'
   )
 
+  const postalCodeInputElement = document.querySelector<HTMLInputElement>(
+    '#votersListUpdate--mailingPostalCode'
+  )
+
   function toggleProvinceInput(): void {
     if (
       countrySelectElement === null ||
       provinceCanadaSelectElement === null ||
-      provinceOtherInputElement === null
+      provinceOtherInputElement === null ||
+      postalCodeInputElement === null
     ) {
       return
     }
@@ -232,6 +246,15 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
 
       provinceOtherInputElement.removeAttribute('disabled')
       provinceOtherInputElement.closest('.field')?.classList.remove('is-hidden')
+    }
+
+    const postalCodePattern =
+      countrySelectElement.selectedOptions[0].dataset.postalCodePattern ?? ''
+
+    if (postalCodePattern === '') {
+      postalCodeInputElement.removeAttribute('pattern')
+    } else {
+      postalCodeInputElement.setAttribute('pattern', postalCodePattern)
     }
   }
 
