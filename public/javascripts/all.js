@@ -26,7 +26,7 @@
     }
     globalThis.voterServices = {
         urlPrefix: document.body.dataset.urlPrefix ?? '',
-        debounce: function (functionToDebounce, delayMillis) {
+        debounce(functionToDebounce, delayMillis) {
             let timeout;
             return function (..._arguments) {
                 const context = this;
@@ -38,7 +38,7 @@
                 timeout = setTimeout(later, delayMillis);
             };
         },
-        doLoadStreetNames: async function (callback) {
+        async doLoadStreetNames(callback) {
             if (streetNames.length > 0) {
                 renderStreetNamesSelectElement();
                 if (callback !== undefined) {

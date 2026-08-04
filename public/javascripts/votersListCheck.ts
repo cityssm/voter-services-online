@@ -10,8 +10,8 @@
   function switchTab(clickEvent: MouseEvent): void {
     clickEvent.preventDefault()
 
-    const tabLinkElement = clickEvent.currentTarget as HTMLAnchorElement
-    const tabId = tabLinkElement.getAttribute('aria-controls')
+    const selectedTabLinkElement = clickEvent.currentTarget as HTMLAnchorElement
+    const tabId = selectedTabLinkElement.getAttribute('aria-controls')
 
     if (tabId === null) {
       return

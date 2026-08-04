@@ -59,10 +59,7 @@ declare global {
      * @returns A debounced version of the function
      * @see https://davidwalsh.name/javascript-debounce-function
      */
-    debounce: function (
-      functionToDebounce: () => void,
-      delayMillis: number
-    ): () => void {
+    debounce(functionToDebounce: () => void, delayMillis: number): () => void {
       let timeout: NodeJS.Timeout | number | undefined
 
       return function (this: unknown, ..._arguments): void {
@@ -79,7 +76,7 @@ declare global {
       }
     },
 
-    doLoadStreetNames: async function (callback?: () => void): Promise<void> {
+    async doLoadStreetNames(callback?: () => void): Promise<void> {
       if (streetNames.length > 0) {
         renderStreetNamesSelectElement()
 

@@ -6,8 +6,8 @@
     const tabContentElements = document.querySelectorAll('.tabs-content .tab-content');
     function switchTab(clickEvent) {
         clickEvent.preventDefault();
-        const tabLinkElement = clickEvent.currentTarget;
-        const tabId = tabLinkElement.getAttribute('aria-controls');
+        const selectedTabLinkElement = clickEvent.currentTarget;
+        const tabId = selectedTabLinkElement.getAttribute('aria-controls');
         if (tabId === null) {
             return;
         }
