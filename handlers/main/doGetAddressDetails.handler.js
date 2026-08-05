@@ -1,3 +1,4 @@
+import { isSameDay } from '@cityssm/utils-datetime';
 import { parseMicrosoftJsonDate } from '@cityssm/voterview-api';
 import { voterViewApi } from '../../helpers/api.helpers.js';
 export default async function handler(request, response) {
@@ -15,9 +16,7 @@ export default async function handler(request, response) {
         if (dateOpen === undefined) {
             return false;
         }
-        if (dateOpen.getFullYear() === currentDate.getFullYear() &&
-            dateOpen.getMonth() === currentDate.getMonth() &&
-            dateOpen.getDate() === currentDate.getDate()) {
+        if (isSameDay(dateOpen, currentDate)) {
             return true;
         }
         return dateOpen >= currentDate;

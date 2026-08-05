@@ -1,3 +1,4 @@
+import { isSameDay } from '@cityssm/utils-datetime'
 import {
   type CandidateList,
   type VotingLocation,
@@ -76,11 +77,7 @@ export default async function handler(
         return false
       }
 
-      if (
-        dateOpen.getFullYear() === currentDate.getFullYear() &&
-        dateOpen.getMonth() === currentDate.getMonth() &&
-        dateOpen.getDate() === currentDate.getDate()
-      ) {
+      if (isSameDay(dateOpen, currentDate)) {
         return true
       }
 
