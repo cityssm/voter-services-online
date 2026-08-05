@@ -276,7 +276,7 @@
         document.documentElement.classList.add('is-clipped');
         votersListModalElement
             ?.querySelector('iframe')
-            ?.setAttribute('src', 'votersList');
+            ?.setAttribute('src', `${voterServices.urlPrefix}/votersList`);
     });
     function closeModal(clickEvent) {
         clickEvent.preventDefault();

@@ -445,7 +445,7 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
 
       votersListModalElement
         ?.querySelector('iframe')
-        ?.setAttribute('src', 'votersList')
+        ?.setAttribute('src', `${voterServices.urlPrefix}/votersList`)
     })
 
   function closeModal(clickEvent: MouseEvent): void {
