@@ -84,11 +84,7 @@ export default async function handler(
         return true
       }
 
-      if (dateOpen < currentDate) {
-        return false
-      }
-
-      return true
+      return dateOpen >= currentDate
     })
     .map((votingLocation) => ({
       Address1: votingLocation.Address1,
