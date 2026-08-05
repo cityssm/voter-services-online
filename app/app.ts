@@ -76,6 +76,7 @@ if (urlPrefix !== '') {
 app
   .use(urlPrefix, express.static('public'))
   .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
+  .use(`${urlPrefix}/lib/bulma-js`, express.static('node_modules/@cityssm/bulma-js/dist'))
   .use(
     `${urlPrefix}/lib/fa`,
     express.static('node_modules/@fortawesome/fontawesome-free')

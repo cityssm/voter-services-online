@@ -1,4 +1,8 @@
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+
 import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/doGetVoterDetailLists.handler.js'
+
+declare const bulmaJS: BulmaJS
 
 ;(() => {
   /*
@@ -363,10 +367,21 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
       const fileSizeInBytes = uploadIDFileInputElement.files[0].size
 
       if (fileSizeInBytes > 10 * 1024 * 1024) {
-        // eslint-disable-next-line no-alert
-        alert(
-          'The file you selected is too large. Please select a file that is less than 10 MB in size.'
-        )
+
+        bulmaJS.alert({
+          message:
+            'The file you selected is too large. Please select a file that is less than 10 MB in size.',
+
+          contextualColorName: 'danger',
+
+          okButton: {
+            text: 'OK',
+
+            callbackFunction: () => {
+              uploadIDFileInputElement.focus()
+            }
+          }
+        })
 
         uploadIDFileInputElement.value = ''
         uploadIDFileNameElement.textContent = ''
