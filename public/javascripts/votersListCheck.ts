@@ -37,4 +37,6 @@
   for (const tabLinkElement of tabLinkElements) {
     tabLinkElement.addEventListener('click', switchTab)
   }
+
+  document.querySelector<HTMLInputElement>('#votersList--firstName')?.focus()
 })()

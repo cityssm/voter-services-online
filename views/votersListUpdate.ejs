@@ -11,8 +11,7 @@
   <% } else { %>
   <div class="notification is-danger">
     <p>
-      <strong>No!</strong>
-      You are not on the voter's list.
+      No record was found on the voter's list for the information provided.
     </p>
   </div>
   <% } %>
@@ -45,7 +44,7 @@
   <% if (voterRecord.Found) { %>
   <div class="box">
     <div class="buttons is-centered">
-      <button class="button is-warning is-show-form-button" type="button">
+      <button class="button is-medium is-warning is-show-form-button" type="button">
         <span class="icon">
           <i class="fa-solid fa-pencil"></i>
         </span>
@@ -64,7 +63,7 @@
     <div class="column">
       <div class="box">
         <div class="buttons is-centered">
-          <a class="button is-info" href="<%= urlPrefix %>/votersList">
+          <a class="button is-medium is-info" href="<%= urlPrefix %>/votersList">
             <span class="icon">
               <i class="fa-solid fa-magnifying-glass"></i>
             </span>
@@ -80,7 +79,7 @@
     <div class="column">
       <div class="box">
         <div class="buttons is-centered">
-          <button class="button is-warning is-show-form-button" type="button">
+          <button class="button is-medium is-warning is-show-form-button" type="button">
             <span class="icon">
               <i class="fa-solid fa-pencil"></i>
             </span>
@@ -113,7 +112,7 @@
           <label class="label" for="votersListUpdate--firstName">
             First Name
           </label>
-          <div class="control">
+          <div class="control has-icons-right">
             <input
               class="input"
               id="votersListUpdate--firstName"
@@ -123,6 +122,9 @@
               maxlength="40"
               required
             />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -148,7 +150,7 @@
           <label class="label" for="votersListUpdate--lastName">
             Last Name
           </label>
-          <div class="control">
+          <div class="control has-icons-right">
             <input
               class="input"
               id="votersListUpdate--lastName"
@@ -158,6 +160,9 @@
               maxlength="40"
               required
             />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -213,7 +218,7 @@
         <div class="control">
           <span class="button is-static">-</span>
         </div>
-        <div class="control is-expanded">
+        <div class="control is-expanded has-icons-right">
           <input
             class="input"
             id="votersListUpdate--dateOfBirthDay"
@@ -226,6 +231,9 @@
             placeholder="Day"
             required
           />
+          <span class="icon is-small is-right">
+            <i class="fa-solid fa-asterisk"></i>
+          </span>
         </div>
       </div>
     </fieldset>
@@ -236,7 +244,7 @@
       <div class="column">
         <div class="field">
           <label for="votersListUpdate--residencyStatus" class="label">Residency Status</label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--residencyStatus"
@@ -245,13 +253,16 @@
                 required
               ></select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="field">
           <label for="votersListUpdate--occupancyStatus" class="label">Occupancy Status</label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--occupancyStatus"
@@ -260,13 +271,16 @@
                 required
               ></select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="field">
           <label for="votersListUpdate--religion" class="label">Roman Catholic</label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--religion"
@@ -275,6 +289,9 @@
                 required
               ></select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -283,7 +300,7 @@
       <div class="column is-8">
         <div class="field">
           <label for="votersListUpdate--schoolSupport" class="label">School Support</label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--schoolSupport"
@@ -292,13 +309,16 @@
                 required
               ></select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="field">
           <label for="votersListUpdate--frenchLanguageRights" class="label">French Rights</label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--frenchLanguageRights"
@@ -307,6 +327,9 @@
                 required
               ></select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -320,7 +343,7 @@
           <label for="votersListUpdate--preferredContactMethod" class="label">
             Preferred Method of Contact
           </label>
-          <div class="control is-expanded">
+          <div class="control is-expanded has-icons-right">
             <div class="select is-fullwidth">
               <select
                 id="votersListUpdate--preferredContactMethod"
@@ -332,13 +355,16 @@
                 <option value="Phone" <%= voterRecord.PreferEmailForContact === 'Phone' ? 'selected' : '' %>>Phone</option>
               </select>
             </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="field">
           <label for="votersListUpdate--email" class="label">Email Address</label>
-          <div class="control">
+          <div class="control has-icons-right">
             <input
               class="input"
               id="votersListUpdate--email"
@@ -348,6 +374,9 @@
               maxlength="120"
               required
             />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
         <div class="field">
@@ -380,7 +409,7 @@
             Street Number
           </label>
           <div class="field has-addons">
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <input
                 class="input"
                 id="votersListUpdate--streetNumber"
@@ -391,6 +420,9 @@
                 value="<%= voterRecord.StreetNumber ?? '' %>"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
             <div class="control">
               <input
@@ -411,7 +443,7 @@
             <label class="label" for="votersListUpdate--streetName">
               Street Name
             </label>
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <div class="select is-fullwidth">
                 <select
                   id="votersListUpdate--streetName"
@@ -423,6 +455,9 @@
                   <option value="">(Loading street names...)</option>
                 </select>
               </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -452,7 +487,7 @@
       <legend class="title is-5">Mailing Address</legend>
 
       <div class="field has-addons">
-        <div class="control is-expanded">
+        <div class="control is-expanded has-icons-right">
           <input 
             class="input"
             id="votersListUpdate--mailingAddress1"
@@ -464,6 +499,9 @@
             aria-label="Mailing Address Line 1"
             required
           />
+          <span class="icon is-small is-right">
+            <i class="fa-solid fa-asterisk"></i>
+          </span>
         </div>
         <div class="control">
           <button class="button" type="button" id="votersListUpdate--copyResidentialAddress" title="Copy Residential Address">
@@ -508,7 +546,7 @@
             <label class="label" for="votersListUpdate--mailingCity">
               City
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input 
                 class="input"
                 id="votersListUpdate--mailingCity"
@@ -519,6 +557,9 @@
                 maxlength="30"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -527,7 +568,7 @@
             <label class="label" for="votersListUpdate--mailingProvinceCanada">
               Province
             </label>
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <div class="select is-fullwidth">
                 <select
                   id="votersListUpdate--mailingProvinceCanada"
@@ -546,13 +587,16 @@
                   <% } %>
                 </select>
               </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
           <div class="field mb-0 <%= voterRecordIsCanada ? 'is-hidden' : '' %>">
             <label class="label" for="votersListUpdate--mailingProvinceOther">
               Province / State
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input 
                 class="input"
                 id="votersListUpdate--mailingProvinceOther"
@@ -563,6 +607,9 @@
                 required
                 <% if (voterRecordIsCanada) { %> disabled <% } %>
               />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -573,7 +620,7 @@
             <label class="label" for="votersListUpdate--mailingPostalCode">
               Postal Code
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input 
                 class="input"
                 id="votersListUpdate--mailingPostalCode"
@@ -586,6 +633,9 @@
                 maxlength="10"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -594,7 +644,7 @@
             <label class="label" for="votersListUpdate--mailingCountry">
               Country
             </label>
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <div class="select is-fullwidth">
                 <select
                   id="votersListUpdate--mailingCountry"
@@ -615,6 +665,9 @@
                   <% } %>
                 </select>
               </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -746,7 +799,7 @@
     </fieldset>
 
     <p class="has-text-centered mt-5">
-      <button class="button is-success" type="submit">
+      <button class="button is-medium is-success" type="submit">
         <% if (voterRecord.Found) { %>
           <span class="icon"><i class="fa-solid fa-pencil"></i></span>
           <span>Update My Information</span>

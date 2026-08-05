@@ -22,4 +22,5 @@
     for (const tabLinkElement of tabLinkElements) {
         tabLinkElement.addEventListener('click', switchTab);
     }
+    document.querySelector('#votersList--firstName')?.focus();
 })();

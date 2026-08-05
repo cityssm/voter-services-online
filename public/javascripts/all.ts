@@ -38,7 +38,7 @@ declare global {
       }
 
       streetNamesSelectElement.innerHTML =
-        '<option value="">(Select a street name)</option>'
+        '<option value="">(Select a Street Name)</option>'
 
       for (const streetName of streetNames) {
         const optionElement = document.createElement('option')

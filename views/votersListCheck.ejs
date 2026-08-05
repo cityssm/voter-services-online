@@ -24,13 +24,26 @@
     action="<%= urlPrefix %>/votersList/result"
     method="POST"
   >
+    <div class="message is-info">
+      <div class="message-body">
+        <p class="mb-2">
+          Please enter your personal information below to look up your record in the voter's list.
+          If your record is found, you will have the option to submit an application
+          to update your information, or apply for voting by mail.
+        </p>
+        <p>
+          If you are not found in the voter's list, you will be given the option
+          to submit an application to be added to the list.
+        </p>
+      </div>
+    </div>
     <div class="columns">
       <div class="column">
         <div class="field">
           <label class="label" for="votersList--firstName">
             First Name
           </label>
-          <div class="control">
+          <div class="control has-icons-right">
             <input
               class="input"
               id="votersList--firstName"
@@ -40,7 +53,14 @@
               autofocus
               required
             />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
+          <p class="help">
+            Enter your legal first name as it appears on your identification documents.
+            Avoid using nicknames or abbreviations.
+          </p>
         </div>
       </div>
       <div class="column">
@@ -48,7 +68,7 @@
           <label class="label" for="votersList--lastName">
             Last Name
           </label>
-          <div class="control">
+          <div class="control has-icons-right">
             <input
               class="input"
               id="votersList--lastName"
@@ -57,6 +77,9 @@
               maxlength="40"
               required
             />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -109,7 +132,7 @@
         <div class="control">
           <span class="button is-static">-</span>
         </div>
-        <div class="control is-expanded">
+        <div class="control is-expanded has-icons-right">
           <input
             class="input"
             id="votersList--dateOfBirthDay"
@@ -121,6 +144,9 @@
             placeholder="Day"
             required
           />
+          <span class="icon is-small is-right">
+            <i class="fa-solid fa-asterisk"></i>
+          </span>
         </div>
       </div>
     </fieldset>
@@ -128,13 +154,23 @@
     <fieldset>
       <legend class="title is-5">Residential Address</legend>
 
+      <% if (configFunctions.getConfigProperty('settings.city') !== '') { %>
+      <div class="message is-info">
+        <div class="message-body">
+          Note that only addresses in
+          <span class="has-text-weight-semibold"><%= configFunctions.getConfigProperty('settings.city') %></span>
+          are eligible for this service.
+        </div>
+      </div>
+      <% } %>
+
       <div class="columns">
         <div class="column is-3">
           <div class="field">
             <label class="label" for="votersList--streetNumber">
               Street Number
             </label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input
                 class="input"
                 id="votersList--streetNumber"
@@ -144,6 +180,9 @@
                 pattern="^[0-9]+.+"
                 required
               />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -152,7 +191,7 @@
             <label class="label" for="votersList--streetName">
               Street Name
             </label>
-            <div class="control is-expanded">
+            <div class="control is-expanded has-icons-right">
               <div class="select is-fullwidth">
                 <select
                   id="votersList--streetName"
@@ -163,6 +202,9 @@
                   <option value="">(Loading street names...)</option>
                 </select>
               </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -185,8 +227,8 @@
       </div>
     </fieldset>
 
-    <p class="has-text-right mt-5">
-      <button class="button is-success" id="votersList--submit" type="submit">
+    <p class="has-text-centered mt-5">
+      <button class="button is-medium is-success" id="votersList--submit" type="submit">
         <span class="icon">
           <i class="fa-solid fa-check-to-slot"></i>
         </span>
@@ -201,6 +243,14 @@
     action="<%= urlPrefix %>/votersList/status"
     method="POST"
   >
+    <div class="message is-info">
+      <div class="message-body">
+        If you have recently submitted an application to make a change to the voter's list,
+        you can check the status of your application here.
+        Please enter your last name and confirmation code below.
+      </div>
+    </div>
+
     <div class="columns">
       <div class="column">
         <div class="control">
@@ -219,7 +269,7 @@
         <div class="control">
           <label class="label" for="status--confirmationCode">Confirmation Code</label>
           <input
-            class="input"
+            class="input is-uppercase"
             id="status--confirmationCode"
             name="confirmationCode"
             type="text"
@@ -230,8 +280,8 @@
         </div>
       </div>
     </div>
-    <p class="has-text-right">
-      <button class="button is-info" type="submit">
+    <p class="has-text-centered">
+      <button class="button is-medium is-success" type="submit">
         <span class="icon">
           <i class="fa-solid fa-circle-info"></i>
         </span>

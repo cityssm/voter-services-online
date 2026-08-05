@@ -1,3 +1,5 @@
+/* Remove the up/down arrows from number input fields */
+
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
@@ -7,4 +9,13 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/*
+ * Fixes the position of the right icon in a select field when using Bulma's
+ * "has-icons-right" class.
+ */
+
+.control.has-icons-right .select + .icon.is-right {
+  right: 1.75em;
 }
