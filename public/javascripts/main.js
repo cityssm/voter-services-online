@@ -172,7 +172,7 @@
             streetName: address.StreetNameFull,
             streetNumber: address.StreetNumber
         });
-        await fetch(`doGetAddressDetails?${urlParameters.toString()}`)
+        await fetch(`${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`)
             .then(async (response) => (await response.json()))
             .then((addressDetails) => {
             renderVotingLocations(addressDetails.votingLocations);
@@ -193,7 +193,7 @@
       `;
             return;
         }
-        await fetch(`doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`)
+        await fetch(`${voterServices.urlPrefix}/doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`)
             .then(async (response) => (await response.json()))
             .then((addressSearchResults) => {
             if (addressSearchResults.addresses.length === 0) {

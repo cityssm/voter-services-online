@@ -3,10 +3,6 @@
 import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.handler.js'
 import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.handler.js'
 
-declare const voterServices: {
-  debounce: (functionToDebounce: () => void, waitMillis: number) => () => void
-}
-
 ;(() => {
   const addressSearchFieldElement = document.querySelector<HTMLInputElement>(
     '#addressSearch--civicAddress'
@@ -284,7 +280,7 @@ declare const voterServices: {
       streetNumber: address.StreetNumber
     })
 
-    await fetch(`doGetAddressDetails?${urlParameters.toString()}`)
+    await fetch(`${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`)
       .then(
         async (response) =>
           (await response.json()) as DoGetAddressDetailsResponse
@@ -315,7 +311,7 @@ declare const voterServices: {
     }
 
     await fetch(
-      `doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`
+      `${voterServices.urlPrefix}/doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`
     )
       .then(
         async (response) => (await response.json()) as DoGetAddressesResponse
