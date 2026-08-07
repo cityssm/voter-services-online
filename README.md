@@ -17,6 +17,62 @@ using the VoterView API.
 - ✏️ Update your voter's list record.
 - ✉️ Sign up for "Vote by Mail".
 
+## Getting Started
+
+This application requires a current version of
+[Node](https://nodejs.org/) to run,
+along with active VoterView API access.
+
+After downloading a release or cloning a copy of this repository,
+install the application dependencies.
+
+```sh
+npm install --omit=dev
+```
+
+Next, in the `data` folder, create a `config.js` file.
+Use the `sample.config.js` file for guidance.
+
+```javascript
+// sample.config.js
+
+export const config = {
+  application: {
+    httpPort: 8080,
+    applicationName: 'Sample City Voter Services',
+    footer: '_mainFooterOntario2026'
+  },
+
+  reverseProxy: {},
+
+  voterViewApi: {
+    countyMunicipalityCode: '9999',
+    username: 'SAMPLE',
+    password: 'samplePass',
+    useTrainingDatabase: true
+  },
+
+  settings: {
+    city: 'Sample City',
+    province: 'ON'
+  }
+}
+
+export default config
+```
+
+Finally, start the application.
+
+```sh
+npm start
+```
+
+Alternatively, the application can be installed as a Windows service.
+
+```sh
+windowsService-install.bat
+```
+
 ## About this Project
 
 Although the system is quite niche, it's being released in an open source
