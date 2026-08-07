@@ -4,7 +4,9 @@ export interface Config {
   application: {
     httpPort?: number
 
-    applicationName?: string
+    applicationName?: string,
+
+    footer?: string
   }
 
   reverseProxy: {

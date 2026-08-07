@@ -1,6 +1,7 @@
 export const configDefaultValues = {
     'application.httpPort': 9000,
     'application.applicationName': 'Voter Services Online',
+    'application.footer': '',
     'reverseProxy.disableCompression': false,
     'reverseProxy.disableEtag': false,
     'reverseProxy.disableRateLimit': false,

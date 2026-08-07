@@ -46,7 +46,7 @@
       </div>
     </nav>
 
-    <div class="px-4">
+    <main class="px-4 mb-4">
       <main class="columns is-multiline">
         <aside class="column is-4-desktop is-12-touch">
           <form class="mb-4" id="form--addressSearch">
@@ -114,7 +114,11 @@
           </div>
         </section>
       </main>
-    </div>
+    </main>
+
+    <% if (configFunctions.getConfigProperty("application.footer")) { %>
+    <%- include(configFunctions.getConfigProperty("application.footer")) %>
+    <% } %>
 
     <div class="modal" id="modal--votersList">
       <div class="modal-background"></div>

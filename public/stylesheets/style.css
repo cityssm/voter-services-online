@@ -1,6 +1,8 @@
-/* Remove the up/down arrows from number input fields */
+/*
+ * Remove the up/down arrows from number input fields 
+ */
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
@@ -18,4 +20,13 @@ input::-webkit-inner-spin-button {
 
 .control.has-icons-right .select + .icon.is-right {
   right: 1.75em;
+}
+
+/*
+ * Make the .main full height when a footer is present.
+ */
+
+main:has(+ footer),
+main:has(+ .footer) {
+  min-height: calc(100vh - 82px);
 }
