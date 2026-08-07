@@ -1,7 +1,8 @@
 export const config = {
     application: {
         httpPort: 8080,
-        applicationName: 'Sample City Voter Services'
+        applicationName: 'Sample City Voter Services',
+        footer: '_mainFooterOntario2026'
     },
     reverseProxy: {},
     voterViewApi: {
