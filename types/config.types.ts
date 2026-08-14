@@ -36,5 +36,7 @@ export interface Config {
   settings?: {
     city?: string
     province?: typeof provincesTerritoriesAlphaCodes[number]
+
+    candidateListUrl?: string
   }
 }

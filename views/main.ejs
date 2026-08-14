@@ -114,7 +114,25 @@
                 <div id="container--votingLocations"></div>
               </div>
               <div class="column">
-                <h2 class="title is-5">Candidates</h2>
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <h2 class="title is-5">Candidates</h2>
+                  </div>
+                  <% if (configFunctions.getConfigProperty("settings.candidateListUrl") !== '') { %>
+                  <div class="column is-narrow">
+                    <a
+                      class="button is-small is-info"
+                      href="<%= configFunctions.getConfigProperty('settings.candidateListUrl') %>"
+                      target="_blank"
+                    >
+                      <span class="icon">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                      </span>
+                      <span>Candidate Details</span>
+                    </a>
+                  </div>
+                  <% } %>
+                </div>
                 <div id="container--candidates"></div>
               </div>
             </div>

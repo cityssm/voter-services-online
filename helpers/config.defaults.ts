@@ -18,7 +18,9 @@ export const configDefaultValues = {
   'voterViewApi.useTrainingDatabase': false,
 
   'settings.city': '',
-  'settings.province': 'ON' as (typeof provincesTerritoriesAlphaCodes)[number]
+  'settings.province': 'ON' as (typeof provincesTerritoriesAlphaCodes)[number],
+
+  'settings.candidateListUrl': ''
 }
 
 export default configDefaultValues

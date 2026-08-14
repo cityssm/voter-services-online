@@ -12,6 +12,7 @@ export const configDefaultValues = {
     'voterViewApi.username': '',
     'voterViewApi.useTrainingDatabase': false,
     'settings.city': '',
-    'settings.province': 'ON'
+    'settings.province': 'ON',
+    'settings.candidateListUrl': ''
 };
 export default configDefaultValues;
