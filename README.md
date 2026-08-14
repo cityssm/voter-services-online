@@ -12,9 +12,9 @@ using the VoterView API.
 ## Features
 
 - ℹ️ Find voting locations and candidates by address.
-- 🔎 Check whether or not you're on the voter's list.
-- ➕ Add yourself to the voter's list.
-- ✏️ Update your voter's list record.
+- 🔎 Check whether or not you're on the voters list.
+- ➕ Add yourself to the voters list.
+- ✏️ Update your voters list record.
 - ✉️ Sign up for "Vote by Mail".
 
 ## Getting Started
