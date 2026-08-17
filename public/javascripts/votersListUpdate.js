@@ -1,4 +1,89 @@
 (() => {
+    function initializePreferredContactMethodToggle(elementIdPrefix) {
+        const preferredContactMethodSelectElement = document.querySelector(`#${elementIdPrefix}--preferredContactMethod`);
+        preferredContactMethodSelectElement?.addEventListener('change', () => {
+            const phoneNumberInputElement = document.querySelector(`#${elementIdPrefix}--phoneNumber`);
+            if (preferredContactMethodSelectElement.value === 'Phone') {
+                phoneNumberInputElement?.setAttribute('required', 'true');
+            }
+            else {
+                phoneNumberInputElement?.removeAttribute('required');
+            }
+        });
+    }
+    function toggleProvinceInput(elementIdPrefix) {
+        const countrySelectElement = document.querySelector(`#${elementIdPrefix}--mailingCountry`);
+        const provinceCanadaSelectElement = document.querySelector(`#${elementIdPrefix}--mailingProvinceCanada`);
+        const provinceOtherInputElement = document.querySelector(`#${elementIdPrefix}--mailingProvinceOther`);
+        const postalCodeInputElement = document.querySelector(`#${elementIdPrefix}--mailingPostalCode`);
+        if (countrySelectElement === null ||
+            provinceCanadaSelectElement === null ||
+            provinceOtherInputElement === null ||
+            postalCodeInputElement === null) {
+            return;
+        }
+        const isCanada = countrySelectElement.selectedOptions[0].dataset.isCanada === 'true';
+        if (isCanada) {
+            provinceCanadaSelectElement.removeAttribute('disabled');
+            provinceCanadaSelectElement
+                .closest('.field')
+                ?.classList.remove('is-hidden');
+            provinceOtherInputElement.setAttribute('disabled', 'true');
+            provinceOtherInputElement.closest('.field')?.classList.add('is-hidden');
+        }
+        else {
+            provinceCanadaSelectElement.setAttribute('disabled', 'true');
+            provinceCanadaSelectElement.closest('.field')?.classList.add('is-hidden');
+            provinceOtherInputElement.removeAttribute('disabled');
+            provinceOtherInputElement.closest('.field')?.classList.remove('is-hidden');
+        }
+        const postalCodePattern = countrySelectElement.selectedOptions[0].dataset.postalCodePattern ?? '';
+        if (postalCodePattern === '') {
+            postalCodeInputElement.removeAttribute('pattern');
+        }
+        else {
+            postalCodeInputElement.setAttribute('pattern', postalCodePattern);
+        }
+    }
+    function initializeProvinceToggle(elementIdPrefix) {
+        document
+            .querySelector(`#${elementIdPrefix}--mailingCountry`)
+            ?.addEventListener('change', () => {
+            toggleProvinceInput(elementIdPrefix);
+        });
+    }
+    function initializeUploadElement(elementIdPrefix) {
+        const uploadIDFileInputElement = document.querySelector(`#${elementIdPrefix}--uploadID`);
+        uploadIDFileInputElement?.addEventListener('change', () => {
+            const uploadIDFileNameElement = document.querySelector(`#${elementIdPrefix}--uploadIDFileName`);
+            if (uploadIDFileNameElement !== null &&
+                uploadIDFileInputElement.files?.length === 1) {
+                const fileSizeInBytes = uploadIDFileInputElement.files[0].size;
+                if (fileSizeInBytes > 10 * 1024 * 1024) {
+                    bulmaJS.alert({
+                        message: 'The file you selected is too large. Please select a file that is less than 10 MB in size.',
+                        contextualColorName: 'danger',
+                        okButton: {
+                            text: 'OK',
+                            callbackFunction: () => {
+                                uploadIDFileInputElement.focus();
+                            }
+                        }
+                    });
+                    uploadIDFileInputElement.value = '';
+                    uploadIDFileNameElement.textContent = '';
+                    return;
+                }
+                uploadIDFileNameElement.textContent =
+                    uploadIDFileInputElement.files[0].name;
+            }
+        });
+    }
+    function initializeCommonFormElements(elementIdPrefix) {
+        initializePreferredContactMethodToggle(elementIdPrefix);
+        initializeProvinceToggle(elementIdPrefix);
+        initializeUploadElement(elementIdPrefix);
+    }
     document
         .querySelector('.is-show-form-button')
         ?.addEventListener('click', () => {
@@ -7,6 +92,17 @@
             ?.classList.add('is-hidden');
         document
             .querySelector('#tabContainer--form')
+            ?.classList.remove('is-hidden');
+        voterServices.resizeParentIFrame?.();
+    });
+    document
+        .querySelector('.is-show-vote-by-mail-button')
+        ?.addEventListener('click', () => {
+        document
+            .querySelector('#tabContainer--result')
+            ?.classList.add('is-hidden');
+        document
+            .querySelector('#tabContainer--voteByMail')
             ?.classList.remove('is-hidden');
         voterServices.resizeParentIFrame?.();
     });
@@ -107,51 +203,6 @@
             }
         }
     });
-    const preferredContactMethodSelectElement = document.querySelector('#votersListUpdate--preferredContactMethod');
-    preferredContactMethodSelectElement?.addEventListener('change', () => {
-        const phoneNumberInputElement = document.querySelector('#votersListUpdate--phoneNumber');
-        if (preferredContactMethodSelectElement.value === 'Phone') {
-            phoneNumberInputElement?.setAttribute('required', 'true');
-        }
-        else {
-            phoneNumberInputElement?.removeAttribute('required');
-        }
-    });
-    const countrySelectElement = document.querySelector('#votersListUpdate--mailingCountry');
-    const provinceCanadaSelectElement = document.querySelector('#votersListUpdate--mailingProvinceCanada');
-    const provinceOtherInputElement = document.querySelector('#votersListUpdate--mailingProvinceOther');
-    const postalCodeInputElement = document.querySelector('#votersListUpdate--mailingPostalCode');
-    function toggleProvinceInput() {
-        if (countrySelectElement === null ||
-            provinceCanadaSelectElement === null ||
-            provinceOtherInputElement === null ||
-            postalCodeInputElement === null) {
-            return;
-        }
-        const isCanada = countrySelectElement.selectedOptions[0].dataset.isCanada === 'true';
-        if (isCanada) {
-            provinceCanadaSelectElement.removeAttribute('disabled');
-            provinceCanadaSelectElement
-                .closest('.field')
-                ?.classList.remove('is-hidden');
-            provinceOtherInputElement.setAttribute('disabled', 'true');
-            provinceOtherInputElement.closest('.field')?.classList.add('is-hidden');
-        }
-        else {
-            provinceCanadaSelectElement.setAttribute('disabled', 'true');
-            provinceCanadaSelectElement.closest('.field')?.classList.add('is-hidden');
-            provinceOtherInputElement.removeAttribute('disabled');
-            provinceOtherInputElement.closest('.field')?.classList.remove('is-hidden');
-        }
-        const postalCodePattern = countrySelectElement.selectedOptions[0].dataset.postalCodePattern ?? '';
-        if (postalCodePattern === '') {
-            postalCodeInputElement.removeAttribute('pattern');
-        }
-        else {
-            postalCodeInputElement.setAttribute('pattern', postalCodePattern);
-        }
-    }
-    countrySelectElement?.addEventListener('change', toggleProvinceInput);
     document
         .querySelector('#votersListUpdate--copyResidentialAddress')
         ?.addEventListener('click', () => {
@@ -177,34 +228,13 @@
         const mailingCountrySelectElement = document.querySelector('#votersListUpdate--mailingCountry');
         mailingCountrySelectElement.value =
             mailingCountrySelectElement.querySelector('option[data-is-canada="true"]')?.value ?? '';
-        toggleProvinceInput();
+        toggleProvinceInput('votersListUpdate');
         const mailingProvinceCanadaSelectElement = document.querySelector('#votersListUpdate--mailingProvinceCanada');
         mailingProvinceCanadaSelectElement.value =
             mailingProvinceCanadaSelectElement.dataset.configValue ?? '';
     });
-    const uploadIDFileInputElement = document.querySelector('#votersListUpdate--uploadID');
-    uploadIDFileInputElement?.addEventListener('change', () => {
-        const uploadIDFileNameElement = document.querySelector('#votersListUpdate--uploadIDFileName');
-        if (uploadIDFileNameElement !== null &&
-            uploadIDFileInputElement.files?.length === 1) {
-            const fileSizeInBytes = uploadIDFileInputElement.files[0].size;
-            if (fileSizeInBytes > 10 * 1024 * 1024) {
-                bulmaJS.alert({
-                    message: 'The file you selected is too large. Please select a file that is less than 10 MB in size.',
-                    contextualColorName: 'danger',
-                    okButton: {
-                        text: 'OK',
-                        callbackFunction: () => {
-                            uploadIDFileInputElement.focus();
-                        }
-                    }
-                });
-                uploadIDFileInputElement.value = '';
-                uploadIDFileNameElement.textContent = '';
-                return;
-            }
-            uploadIDFileNameElement.textContent =
-                uploadIDFileInputElement.files[0].name;
-        }
-    });
+    initializeCommonFormElements('votersListUpdate');
+    if (document.querySelector('#form--voteByMailUpdate') !== null) {
+        initializeCommonFormElements('voteByMailUpdate');
+    }
 })();

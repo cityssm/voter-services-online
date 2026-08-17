@@ -42,21 +42,39 @@
     </div>
   </div>
   <% if (voterRecord.Found) { %>
-  <div class="box">
-    <div class="buttons is-centered">
-      <button class="button is-medium is-warning is-show-form-button" type="button">
-        <span class="icon">
-          <i class="fa-solid fa-pencil"></i>
-        </span>
-        <span>Confirm Your Information</span>
-      </button>
+  <div class="columns is-mobile">
+    <div class="column">
+      <div class="box">
+        <div class="buttons is-centered">
+          <button class="button is-medium is-warning is-show-form-button" type="button">
+            <span class="icon">
+              <i class="fa-solid fa-pencil"></i>
+            </span>
+            <span>Confirm Your Information</span>
+          </button>
+        </div>
+        <p class="has-text-centered">
+          If your information is incorrect or has changed,
+          please update your information.
+        </p>
+      </div>
     </div>
-    <p class="has-text-centered">
-      If your information is incorrect or has changed,
-      or you would like to sign up for
-      <span class="has-text-weight-semibold">Vote By Mail</span>,
-      please update your information.
-    </p>
+    <div class="column">
+      <div class="box">
+        <div class="buttons is-centered">
+          <button class="button is-medium is-info is-show-vote-by-mail-button" type="button">
+            <span class="icon">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <span>Apply for Vote By Mail</span>
+          </button>
+        </div>
+        <p class="has-text-centered">
+          If you are unable to vote in person, you can apply for
+          <span class="has-text-weight-semibold">Vote By Mail</span> (Absentee Voting).
+        </p>
+      </div>
+    </div>
   </div>
   <% } else { %>
   <div class="columns is-mobile">
@@ -94,6 +112,8 @@
   </div>
   <% } %>
 </div>
+
+<% const dateOfBirthPieces = voterRecord.DateOfBirth.split('-') %>
 
 <div class="tabContainer is-hidden" id="tabContainer--form">
   <% if (voterRecord.Found) { %>
@@ -168,8 +188,6 @@
       </div>
     </div>
 
-    <% const dateOfBirthPieces = voterRecord.DateOfBirth.split('-') %>
-    
     <fieldset>
       <legend class="label">Date of Birth</legend>
 
@@ -672,22 +690,6 @@
           </div>
         </div>
       </div>
-
-      <% if (voterRecord.Found) { %>
-      <div class="field">
-        <div class="control">
-          <label class="checkbox" for="votersListUpdate--absenteeVoteType">
-            <input
-              id="votersListUpdate--absenteeVoteType"
-              name="absenteeVoteType"
-              type="checkbox"
-              value="1"
-            />
-            Apply for <span class="has-text-weight-semibold">Vote By Mail</span> (Absentee Voting)
-          </label>
-        </div>
-      </div>
-      <% } %>
     </fieldset>
 
     <hr />
@@ -696,49 +698,7 @@
       <legend class="title is-5">Identification</legend>
 
       <% if (configFunctions.getConfigProperty('settings.province') === 'ON') { %>
-      <div class="message is-info">
-        <div class="message-body">
-          <div class="content">
-            <p>
-              To vote in a municipal election in Ontario,
-              you must provide at least one of the following pieces of identification
-              as outlined in the Ontario Ministry of Municipal Affairs and Housing's
-              <a href="https://www.ontario.ca/document/2026-voters-guide-ontario-municipal-council-and-school-board-elections/acceptable" target="_blank" rel="noreferrer noopener">Acceptable Documents for Voter Identification</a>.
-            </p>
-            <ul>
-              <li>Ontario driver's licence</li>
-              <li>Ontario Health Card (photo card)</li>
-              <li>Ontario Photo Card</li>
-              <li>Ontario motor vehicle permit (vehicle portion)</li>
-              <li>cancelled personalized cheque</li>
-              <li>mortgage statement, lease or rental agreement relating to property in Ontario</li>
-              <li>insurance policy or insurance statement</li>
-              <li>loan agreement or other financial agreement with a financial institution</li>
-              <li>document issued or certified by a court in Ontario</li>
-              <li>any other document from the government of Canada, Ontario or a municipality in Ontario or from an agency or such a government</li>
-              <li>any document from a Band Council in Ontario established under the <em>Indian Act</em> (Canada)</li>
-              <li>income tax assessment notice</li>
-              <li>child tax benefit statement</li>
-              <li>statement of employment insurance benefits paid T4E</li>
-              <li>statement of old age security T4A (OAS)</li>
-              <li>statement of Canada Pension Plan benefits T4A(P)</li>
-              <li>Canada Pension Plan statement of contributions</li>
-              <li>statement of direct deposit for Ontario Works</li>
-              <li>statement of direct deposit for Ontario Disability Support Program</li>
-              <li>Workplace Safety and Insurance Board statement of benefits T5007</li>
-              <li>property tax assessment</li>
-              <li>credit card statement, bank account statement, or RRSP, RRIF, RHOSP or T5 statement</li>
-              <li>CNIB Card or a card from another registered charitable organization that provide services to persons with disabilities</li>
-              <li>hospital card or record</li>
-              <li>document showing campus residence, issued by the office or officials responsible for student residence at a post-secondary institution</li>
-              <li>document showing residence at a long-term care home under the Fixing Long-Term Care Act, 2021, issued by the Administrator for the home</li>
-              <li>utility bill for hydro, water, gas, telephone or cable TV or a bill from a public utilities commission</li>
-              <li>cheque stub, T4 statement or pay receipt issued by an employer</li>
-              <li>transcript or report card from a post-secondary school</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <%- include('_votersListIdentificationOntario') %>
       <% } %>
 
       <div class="file has-name is-fullwidth">
@@ -811,5 +771,391 @@
     </p>
   </form>
 </div>
+
+<% if (voterRecord.Found) { %>
+<div class="tabContainer is-hidden" id="tabContainer--voteByMail">
+  <h2 class="title is-4">Vote By Mail Request</h2>
+  <div class="message is-info">
+    <div class="message-body">
+      <div class="content">
+        <p>
+          If you are unable to vote in person, you can apply for
+          <span class="has-text-weight-semibold">Vote By Mail</span> (Absentee Voting).
+        </p>
+      </div>
+    </div>
+  </div>
+  <form id="form--voteByMailUpdate" method="POST" enctype="multipart/form-data" action="<%= urlPrefix %>/votersList/submit">
+    <input name="voterID" type="hidden" value="<%= voterRecord.VoterID ?? '' %>" />
+    <input name="propertyID" type="hidden" value="<%= voterRecord.PropertyID ?? '' %>" />
+
+    <input name="firstName" type="hidden" value="<%= voterRecord.FirstName ?? '' %>" />
+    <input name="middleName" type="hidden" value="<%= voterRecord.MiddleName ?? '' %>" />
+    <input name="lastName" type="hidden" value="<%= voterRecord.LastName ?? '' %>" />
+
+    <input name="dateOfBirthDay" type="hidden" value="<%= dateOfBirthPieces[2] ?? '' %>" />
+    <input name="dateOfBirthMonth" type="hidden" value="<%= dateOfBirthPieces[1] ?? '' %>" />
+    <input name="dateOfBirthYear" type="hidden" value="<%= dateOfBirthPieces[0] ?? '' %>" />
+
+    <input name="residencyStatus" type="hidden" value="<%= voterRecord.ResidencyStatus ?? '' %>" />
+    <input name="occupancyStatus" type="hidden" value="<%= voterRecord.OccupancyStatus ?? '' %>" />
+    <input name="religion" type="hidden" value="<%= voterRecord.Religion ?? '' %>" />
+    <input name="schoolSupport" type="hidden" value="<%= voterRecord.SchoolSupport ?? '' %>" />
+    <input name="frenchLanguageRights" type="hidden" value="<%= voterRecord.FrenchLanguageRights ?? '' %>" />
+
+    <input name="streetNumber" type="hidden" value="<%= voterRecord.StreetNumber ?? '' %>" />
+    <input name="streetNumberSuffix" type="hidden" value="<%= voterRecord.StreetNumberSuffix ?? '' %>" />
+    <input name="streetName" type="hidden" value="<%= voterRecord.StreetName ?? '' %>" />
+    <input name="unitNumber" type="hidden" value="<%= voterRecord.Unit ?? '' %>" />
+
+    <input name="absenteeVoteType" type="hidden" value="1" />
+
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong>Name</strong><br/>
+          <%= voterRecord.FullName %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong>Birth Date</strong><br/>
+          <%= voterRecord.DateOfBirth ?? '' %>
+        </p>
+      </div>
+      <div class="column">
+        <p>
+          <strong>School Support</strong><br/>
+          <%= voterRecord.SchoolSupportDescription ?? '' %>
+        </p>
+      </div>
+    </div>
+
+    <p>
+      <strong>Residential Address</strong><br/>
+      <%= voterRecord.PropertyAddress ?? '' %>
+    </p>
+
+    <hr />
+
+    <div class="columns">
+      <div class="column">
+        <div class="field">
+          <label for="voteByMailUpdate--preferredContactMethod" class="label">
+            Preferred Method of Contact
+          </label>
+          <div class="control is-expanded has-icons-right">
+            <div class="select is-fullwidth">
+              <select
+                id="voteByMailUpdate--preferredContactMethod"
+                name="preferredContactMethod"
+                required
+              >
+                <option value="">(Select a Method)</option>
+                <option value="Email" <%= voterRecord.PreferEmailForContact === 'Email' ? 'selected' : '' %>>Email</option>
+                <option value="Phone" <%= voterRecord.PreferEmailForContact === 'Phone' ? 'selected' : '' %>>Phone</option>
+              </select>
+            </div>
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label for="voteByMailUpdate--email" class="label">Email Address</label>
+          <div class="control has-icons-right">
+            <input
+              class="input"
+              id="voteByMailUpdate--email"
+              name="email"
+              type="email"
+              value="<%= voterRecord.Email ?? '' %>"
+              maxlength="120"
+              required
+            />
+            <span class="icon is-small is-right">
+              <i class="fa-solid fa-asterisk"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="voteByMailUpdate--phoneNumber" class="label">Phone Number</label>
+          <div class="control">
+            <input
+              class="input"
+              id="voteByMailUpdate--phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              value="<%= voterRecord.PhoneNumber ?? '' %>"
+              maxlength="15"
+              <% if (voterRecord.PreferEmailForContact === 'Phone') { %>
+              required
+              <% } %>
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <fieldset>
+      <legend class="title is-5">Mailing Address</legend>
+
+      <div class="field">
+        <div class="control has-icons-right">
+          <input 
+            class="input"
+            id="voteByMailUpdate--mailingAddress1"
+            name="mailingAddress1"
+            type="text"
+            value="<%= voterRecord.Address1 ?? '' %>"
+            maxlength="40"
+            placeholder="Address Line 1"
+            aria-label="Mailing Address Line 1"
+            required
+          />
+          <span class="icon is-small is-right">
+            <i class="fa-solid fa-asterisk"></i>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input 
+            class="input"
+            id="voteByMailUpdate--mailingAddress2"
+            name="mailingAddress2"
+            type="text"
+            value="<%= voterRecord.Address2 ?? '' %>"
+            maxlength="40"
+            placeholder="Address Line 2"
+            aria-label="Mailing Address Line 2"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input 
+            class="input"
+            id="voteByMailUpdate--mailingAddress3"
+            name="mailingAddress3"
+            type="text"
+            value="<%= voterRecord.Address3 ?? '' %>"
+            maxlength="40"
+            placeholder="Address Line 3"
+            aria-label="Mailing Address Line 3"
+          />
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-7">
+          <div class="field">
+            <label class="label" for="voteByMailUpdate--mailingCity">
+              City
+            </label>
+            <div class="control has-icons-right">
+              <input 
+                class="input"
+                id="voteByMailUpdate--mailingCity"
+                name="mailingCity"
+                type="text"
+                value="<%= voterRecord.City ?? '' %>"
+                maxlength="30"
+                required
+              />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field mb-0 <%= voterRecordIsCanada ? '' : 'is-hidden' %>">
+            <label class="label" for="voteByMailUpdate--mailingProvinceCanada">
+              Province
+            </label>
+            <div class="control is-expanded has-icons-right">
+              <div class="select is-fullwidth">
+                <select
+                  id="voteByMailUpdate--mailingProvinceCanada"
+                  name="mailingProvinceCanada"
+                  required
+                  <% if (!voterRecordIsCanada) { %> disabled <% } %>
+                >
+                  <option value="">(Select a Province / Territory)</option>
+                  <% const recordProvince = (voterRecord.Province ?? '').toUpperCase() %>
+                  <% for (const provinceCode of provinces) { %>
+                  <option value="<%= provinceCode[0] %>"
+                    <%= recordProvince === provinceCode[0] || recordProvince === provinceCode[1].toUpperCase() ? 'selected' : '' %>>
+                    <%= provinceCode[1] %>
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+          <div class="field mb-0 <%= voterRecordIsCanada ? 'is-hidden' : '' %>">
+            <label class="label" for="voteByMailUpdate--mailingProvinceOther">
+              Province / State
+            </label>
+            <div class="control has-icons-right">
+              <input 
+                class="input"
+                id="voteByMailUpdate--mailingProvinceOther"
+                name="mailingProvinceOther"
+                type="text"
+                value="<%= voterRecord.Province ?? '' %>"
+                maxlength="20"
+                required
+                <% if (voterRecordIsCanada) { %> disabled <% } %>
+              />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="voteByMailUpdate--mailingPostalCode">
+              Postal Code
+            </label>
+            <div class="control has-icons-right">
+              <input 
+                class="input"
+                id="voteByMailUpdate--mailingPostalCode"
+                name="mailingPostalCode"
+                type="text"
+                value="<%= voterRecord.PostalCode ?? '' %>"
+                <% if (voterRecordIsCanada) { %>
+                pattern="<%- postalCodeRegex.source %>"
+                <% } %>
+                maxlength="10"
+                required
+              />
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="voteByMailUpdate--mailingCountry">
+              Country
+            </label>
+            <div class="control is-expanded has-icons-right">
+              <div class="select is-fullwidth">
+                <select
+                  id="voteByMailUpdate--mailingCountry"
+                  name="mailingCountry"
+                  required
+                >
+                  <option value="">(Select a Country)</option>
+                  <% const recordCountry = (voterRecord.Country ?? '').toUpperCase() %>
+                  <% for (const countryCode of countries) { %>
+                  <option
+                    data-is-canada="<%= isCanada(countryCode[0]) ? 'true' : 'false' %>"
+                    data-postal-code-pattern="<%- isCanada(countryCode[0]) ? postalCodeRegex.source : '' %>"
+                    value="<%= countryCode[1].length <= 30 ? countryCode[1] : countryCode[0] %>"
+                    <%= recordCountry === countryCode[0] || recordCountry === countryCode[1].toUpperCase() ? 'selected' : '' %>
+                  >
+                    <%= countryCode[1] %>
+                  </option>
+                  <% } %>
+                </select>
+              </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <hr />
+
+    <fieldset>
+      <legend class="title is-5">Identification</legend>
+
+      <% if (configFunctions.getConfigProperty('settings.province') === 'ON') { %>
+      <%- include('_votersListIdentificationOntario') %>
+      <% } %>
+
+      <div class="file has-name is-fullwidth">
+        <label class="file-label">
+          <input class="file-input" id="voteByMailUpdate--uploadID" type="file" name="uploadID" accept="image/*,.pdf" required  />
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fa-solid fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a file…
+            </span>
+          </span>
+          <span class="file-name" id="voteByMailUpdate--uploadIDFileName">
+            No file uploaded
+          </span>
+        </label>
+      </div>
+      <p class="help">
+        Please upload a copy of your identification document.
+        Accepted file types are images (JPEG, PNG, GIF) and PDF files.
+        The maximum file size is 10 MB.
+      </p>
+    </fieldset>
+
+    <hr />
+
+    <fieldset>
+      <legend class="title is-5">Declaration</legend>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox" for="voteByMailUpdate--declareTrue">
+            <input
+              id="voteByMailUpdate--declareTrue"
+              name="declareTrue"
+              type="checkbox"
+              required
+            />
+            I declare that the information provided is true and correct to the best of my knowledge.
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <label class="checkbox" for="voteByMailUpdate--declareCanadian">
+            <input
+              id="voteByMailUpdate--declareCanadian"
+              name="declareCanadian"
+              type="checkbox"
+              value="Y"
+              required
+            />
+            I certify that I am a Canadian citizen.
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <p class="has-text-centered mt-5">
+      <button class="button is-medium is-success" type="submit">
+        <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+        <span>Request Vote By Mail</span>
+      </button>
+    </p>
+  </form>
+</div>
+<% } %>
 
 <%- include('_votersListFooter.ejs', { scriptName: 'votersListUpdate' }) -%>
