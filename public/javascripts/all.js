@@ -76,3 +76,15 @@
         globalThis.voterServices.resizeParentIFrame?.();
     });
 })();
+(() => {
+    const formElements = document.querySelectorAll('form[action]');
+    for (const formElement of formElements) {
+        formElement.addEventListener('submit', () => {
+            for (const btn of formElement.querySelectorAll('button[type="submit"]')) {
+                btn.disabled = true;
+                btn.classList.add('is-loading');
+            }
+            return true;
+        });
+    }
+})();
