@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
     Debug.enable(DEBUG_ENABLE_NAMESPACES);
 }
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
-let doShutdown = false;
+let isShuttingDown = false;
 function initializeCluster() {
     const directoryName = path.dirname(fileURLToPath(import.meta.url));
     const processCount = Math.min(4, os.cpus().length * 2);
@@ -42,7 +42,7 @@ function initializeCluster() {
             debug(`Worker ${pid.toString()} has been killed`);
             activeWorkers.delete(pid);
         }
-        if (!doShutdown) {
+        if (!isShuttingDown) {
             debug('Starting another worker');
             const newWorker = cluster.fork();
             const newPid = newWorker.process.pid;
@@ -54,7 +54,7 @@ function initializeCluster() {
         }
     });
     exitHook(() => {
-        doShutdown = true;
+        isShuttingDown = true;
         debug('Shutting down cluster workers...');
         for (const worker of activeWorkers.values()) {
             const pid = worker.process.pid;
@@ -65,14 +65,14 @@ function initializeCluster() {
         }
     });
 }
-function startApplication() {
+function startApp() {
     initializeCluster();
 }
-startApplication();
+startApp();
 function handleSignal(signal) {
     debug(`Received signal: ${signal}`);
     debug('Shutting down...');
-    doShutdown = true;
+    isShuttingDown = true;
     gracefulExit();
 }
 process.on('SIGINT', handleSignal);

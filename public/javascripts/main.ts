@@ -1,9 +1,7 @@
-/* eslint-disable no-secrets/no-secrets */
-
 import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.handler.js'
 import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.handler.js'
 
-;(() => {
+{
   const addressSearchFieldElement = document.querySelector<HTMLInputElement>(
     '#addressSearch--civicAddress'
   ) as HTMLInputElement
@@ -196,7 +194,6 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
 
           panelBlockElement.className = 'panel-block is-block'
 
-          // eslint-disable-next-line no-unsanitized/property
           panelBlockElement.innerHTML = /* html */ `
             <div class="columns is-mobile">
               <div class="column">
@@ -280,15 +277,16 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
       streetNumber: address.StreetNumber
     })
 
-    await fetch(`${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`)
-      .then(
-        async (response) =>
-          (await response.json()) as DoGetAddressDetailsResponse
-      )
-      .then((addressDetails) => {
-        renderVotingLocations(addressDetails.votingLocations)
-        renderCandidates(addressDetails.positions)
-      })
+    const response = await fetch(
+      `${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`
+    )
+
+    const addressDetails =
+      (await response.json()) as DoGetAddressDetailsResponse
+
+    renderVotingLocations(addressDetails.votingLocations)
+
+    renderCandidates(addressDetails.positions)
   }
 
   async function doAddressSearch(): Promise<void> {
@@ -310,91 +308,91 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
       return
     }
 
-    await fetch(
+    const response = await fetch(
       `${voterServices.urlPrefix}/doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`
     )
-      .then(
-        async (response) => (await response.json()) as DoGetAddressesResponse
-      )
-      .then((addressSearchResults) => {
-        if (addressSearchResults.addresses.length === 0) {
-          addressSearchResultsElement.innerHTML = /* html */ `
-            <div class="notification is-warning is-light">
-              <strong>There are no addresses available.</strong><br />
-              Be sure to use a complete civic address, with the civic number first.
-            </div>
-          `
 
-          return
+    const addressSearchResults =
+      (await response.json()) as DoGetAddressesResponse
+
+    if (addressSearchResults.addresses.length === 0) {
+      // eslint-disable-next-line require-atomic-updates
+      addressSearchResultsElement.innerHTML = /* html */ `
+        <div class="notification is-warning is-light">
+          <strong>There are no addresses available.</strong><br />
+          Be sure to use a complete civic address, with the civic number first.
+        </div>
+      `
+
+      return
+    }
+
+    const panelElement = document.createElement('div')
+    panelElement.className = 'panel'
+
+    for (const [
+      addressIndex,
+      address
+    ] of addressSearchResults.addresses.entries()) {
+      const panelBlockElement = document.createElement('a')
+
+      panelBlockElement.className = 'panel-block is-block'
+      panelBlockElement.dataset.addressIndex = addressIndex.toString()
+
+      panelBlockElement.href = '#'
+      panelBlockElement.addEventListener('click', (clickEvent) => {
+        clickEvent.preventDefault()
+
+        // Set the address search field to the selected address
+        addressSearchFieldElement.value = address.Address
+
+        // Hide the address search results
+        addressSearchResultsElement.classList.add('is-hidden')
+
+        // Hide all other address search results
+        for (const possiblePanelBlockElement of addressSearchResultsElement.querySelectorAll<HTMLElement>(
+          '.panel-block'
+        )) {
+          if (
+            possiblePanelBlockElement.dataset.addressIndex ===
+            panelBlockElement.dataset.addressIndex
+          ) {
+            continue
+          }
+
+          possiblePanelBlockElement.classList.add('is-hidden')
+          possiblePanelBlockElement.classList.remove('is-block')
         }
 
-        const panelElement = document.createElement('div')
-        panelElement.className = 'panel'
-
-        for (const [
-          addressIndex,
-          address
-        ] of addressSearchResults.addresses.entries()) {
-          const panelBlockElement = document.createElement('a')
-
-          panelBlockElement.className = 'panel-block is-block'
-          panelBlockElement.dataset.addressIndex = addressIndex.toString()
-
-          panelBlockElement.href = '#'
-          panelBlockElement.addEventListener('click', (clickEvent) => {
-            clickEvent.preventDefault()
-
-            // Set the address search field to the selected address
-            addressSearchFieldElement.value = address.Address
-
-            // Hide the address search results
-            addressSearchResultsElement.classList.add('is-hidden')
-
-            // Hide all other address search results
-            for (const possiblePanelBlockElement of addressSearchResultsElement.querySelectorAll<HTMLElement>(
-              '.panel-block'
-            )) {
-              if (
-                possiblePanelBlockElement.dataset.addressIndex !==
-                panelBlockElement.dataset.addressIndex
-              ) {
-                possiblePanelBlockElement.classList.add('is-hidden')
-                possiblePanelBlockElement.classList.remove('is-block')
-              }
-            }
-
-            void doDisplayAddress(address)
-          })
-
-          panelBlockElement.innerHTML = /* html */ `
-            <div class="columns is-mobile">
-              <div class="column field--address"></div>
-              <div class="column is-narrow has-text-right">
-                Ward <span class="field--ward"></span><br />
-                Poll <span class="field--pollAndSuffix"></span>
-              </div>
-            </div>
-          `
-
-          ;(
-            panelBlockElement.querySelector('.field--address') as HTMLElement
-          ).textContent = address.Address
-
-          ;(
-            panelBlockElement.querySelector('.field--ward') as HTMLElement
-          ).textContent = address.Ward
-
-          ;(
-            panelBlockElement.querySelector(
-              '.field--pollAndSuffix'
-            ) as HTMLElement
-          ).textContent = address.PollAndSuffix
-
-          panelElement.append(panelBlockElement)
-        }
-
-        addressSearchResultsElement.replaceChildren(panelElement)
+        void doDisplayAddress(address)
       })
+
+      panelBlockElement.innerHTML = /* html */ `
+        <div class="columns is-mobile">
+          <div class="column field--address"></div>
+          <div class="column is-narrow has-text-right">
+            Ward <span class="field--ward"></span><br />
+            Poll <span class="field--pollAndSuffix"></span>
+          </div>
+        </div>
+      `
+
+      ;(
+        panelBlockElement.querySelector('.field--address') as HTMLElement
+      ).textContent = address.Address
+
+      ;(
+        panelBlockElement.querySelector('.field--ward') as HTMLElement
+      ).textContent = address.Ward
+
+      ;(
+        panelBlockElement.querySelector('.field--pollAndSuffix') as HTMLElement
+      ).textContent = address.PollAndSuffix
+
+      panelElement.append(panelBlockElement)
+    }
+
+    addressSearchResultsElement.replaceChildren(panelElement)
   }
 
   document
@@ -425,11 +423,11 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
   addressSearchFieldElement.addEventListener('input', debouncedAddressSearch)
 
   void doAddressSearch()
-})()
+}
 
 // Modals
 
-;(() => {
+{
   const votersListModalElement =
     document.querySelector<HTMLDivElement>('#modal--votersList')
 
@@ -468,4 +466,4 @@ import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.
   )) {
     closeButtonElement.addEventListener('click', closeModal)
   }
-})()
+}

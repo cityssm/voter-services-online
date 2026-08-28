@@ -4,25 +4,35 @@ export interface Config {
   application: {
     httpPort?: number
 
-    applicationName?: string,
+    applicationName?: string
 
     footer?: string
   }
 
   reverseProxy: {
-    /** Disable Compression */
+    /**
+     * Disable Compression
+     */
     disableCompression?: boolean
 
-    /** Disable ETag */
+    /**
+     * Disable ETag
+     */
     disableEtag?: boolean
 
-    /** Disable Rate Limiting */
+    /**
+     * Disable Rate Limiting
+     */
     disableRateLimit?: boolean
 
-    /** Is traffic forwarded by a reverse proxy */
+    /**
+     * Is traffic forwarded by a reverse proxy
+     */
     trafficIsForwarded?: boolean
 
-    /** URL Prefix, should start with a slash, but have no trailing slash */
+    /**
+     * URL Prefix, should start with a slash, but have no trailing slash
+     */
     urlPrefix?: string
   }
 
@@ -31,11 +41,11 @@ export interface Config {
     username: string
     password: string
     useTrainingDatabase?: boolean
-  },
+  }
 
   settings?: {
     city?: string
-    province?: typeof provincesTerritoriesAlphaCodes[number]
+    province?: (typeof provincesTerritoriesAlphaCodes)[number]
 
     candidateListUrl?: string
   }

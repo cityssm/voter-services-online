@@ -70,6 +70,7 @@ export default async function handler(
 
   debug('Voter Record: %O', voterRecord)
 
+  // eslint-disable-next-line unicorn/consistent-boolean-name
   const voterRecordIsCanada = isCanada(voterRecord.Country as string)
 
   response.render('votersListUpdate', {

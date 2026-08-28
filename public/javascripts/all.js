@@ -24,7 +24,7 @@
             }
         }
     }
-    globalThis.voterServices = {
+    globalThis.window.voterServices = {
         urlPrefix: document.body.dataset.urlPrefix ?? '',
         debounce(functionToDebounce, delayMillis) {
             let timeout;
@@ -46,18 +46,14 @@
                 }
                 return;
             }
-            await fetch(`${document.body.dataset.urlPrefix}/votersList/doGetAllStreetNames`)
-                .then(async (response) => (await response.json()))
-                .then((streetNamesResponse) => {
-                streetNames = streetNamesResponse.streetNames;
-                sessionStorage.setItem(streetNamesSessionStorageKey, JSON.stringify(streetNames));
-                renderStreetNamesSelectElement();
-            })
-                .finally(() => {
-                if (callback !== undefined) {
-                    callback();
-                }
-            });
+            const response = await fetch(`${document.body.dataset.urlPrefix}/votersList/doGetAllStreetNames`);
+            const streetNamesResponse = (await response.json());
+            streetNames = streetNamesResponse.streetNames;
+            sessionStorage.setItem(streetNamesSessionStorageKey, JSON.stringify(streetNames));
+            renderStreetNamesSelectElement();
+            if (callback !== undefined) {
+                callback();
+            }
         }
     };
 })();
@@ -76,15 +72,14 @@
         globalThis.voterServices.resizeParentIFrame?.();
     });
 })();
-(() => {
+{
     const formElements = document.querySelectorAll('form[action]');
     for (const formElement of formElements) {
         formElement.addEventListener('submit', () => {
-            for (const btn of formElement.querySelectorAll('button[type="submit"]')) {
-                btn.disabled = true;
-                btn.classList.add('is-loading');
+            for (const submitButtonElement of formElement.querySelectorAll('button[type="submit"]')) {
+                submitButtonElement.disabled = true;
+                submitButtonElement.classList.add('is-loading');
             }
-            return true;
         });
     }
-})();
+}

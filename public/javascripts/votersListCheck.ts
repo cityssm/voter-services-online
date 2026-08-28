@@ -1,4 +1,4 @@
-;(() => {
+{
   void voterServices.doLoadStreetNames()
 
   const tabLinkElements =
@@ -31,7 +31,9 @@
       )
     }
 
-    voterServices.resizeParentIFrame?.()
+    if (voterServices.resizeParentIFrame !== undefined) {
+      voterServices.resizeParentIFrame()
+    }
   }
 
   for (const tabLinkElement of tabLinkElements) {
@@ -39,4 +41,4 @@
   }
 
   document.querySelector<HTMLInputElement>('#votersList--firstName')?.focus()
-})()
+}

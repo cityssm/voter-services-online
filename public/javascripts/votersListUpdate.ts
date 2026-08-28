@@ -5,7 +5,7 @@ import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/do
 declare const bulmaJS: BulmaJS
 
 type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
-;(() => {
+{
   function initializePreferredContactMethodToggle(
     elementIdPrefix: FormPrefixes
   ): void {
@@ -19,11 +19,10 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
         `#${elementIdPrefix}--phoneNumber`
       )
 
-      if (preferredContactMethodSelectElement.value === 'Phone') {
-        phoneNumberInputElement?.setAttribute('required', 'true')
-      } else {
-        phoneNumberInputElement?.removeAttribute('required')
-      }
+      phoneNumberInputElement?.toggleAttribute(
+        'required',
+        preferredContactMethodSelectElement.value === 'Phone'
+      )
     })
   }
 
@@ -76,6 +75,7 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
     const postalCodePattern =
       countrySelectElement.selectedOptions[0].dataset.postalCodePattern ?? ''
 
+    // eslint-disable-next-line unicorn/prefer-toggle-attribute
     if (postalCodePattern === '') {
       postalCodeInputElement.removeAttribute('pattern')
     } else {
@@ -156,7 +156,9 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
         .querySelector('#tabContainer--form')
         ?.classList.remove('is-hidden')
 
-      voterServices.resizeParentIFrame?.()
+      if (voterServices.resizeParentIFrame !== undefined) {
+        voterServices.resizeParentIFrame()
+      }
     })
 
   document
@@ -170,7 +172,9 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
         .querySelector('#tabContainer--voteByMail')
         ?.classList.remove('is-hidden')
 
-      voterServices.resizeParentIFrame?.()
+      if (voterServices.resizeParentIFrame !== undefined) {
+        voterServices.resizeParentIFrame()
+      }
     })
 
   /*
@@ -182,135 +186,133 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
    */
 
   async function doLoadVoterDetailLists(): Promise<void> {
-    await fetch(`${voterServices.urlPrefix}/votersList/doGetVoterDetailLists`)
-      .then(
-        async (response) =>
-          (await response.json()) as DoGetVoterDetailListsResponse
+    const response = await fetch(
+      `${voterServices.urlPrefix}/votersList/doGetVoterDetailLists`
+    )
+
+    const voterDetailListsResponse =
+      (await response.json()) as DoGetVoterDetailListsResponse
+
+    const residencyStatusSelectElement =
+      document.querySelector<HTMLSelectElement>(
+        '#votersListUpdate--residencyStatus'
       )
-      .then((voterDetailListsResponse) => {
-        const residencyStatusSelectElement =
-          document.querySelector<HTMLSelectElement>(
-            '#votersListUpdate--residencyStatus'
-          )
 
-        const occupancyStatusSelectElement =
-          document.querySelector<HTMLSelectElement>(
-            '#votersListUpdate--occupancyStatus'
-          )
+    const occupancyStatusSelectElement =
+      document.querySelector<HTMLSelectElement>(
+        '#votersListUpdate--occupancyStatus'
+      )
 
-        const religionCodeSelectElement =
-          document.querySelector<HTMLSelectElement>(
-            '#votersListUpdate--religion'
-          )
+    const religionCodeSelectElement = document.querySelector<HTMLSelectElement>(
+      '#votersListUpdate--religion'
+    )
 
-        const schoolSupportCodeSelectElement =
-          document.querySelector<HTMLSelectElement>(
-            '#votersListUpdate--schoolSupport'
-          )
+    const schoolSupportCodeSelectElement =
+      document.querySelector<HTMLSelectElement>(
+        '#votersListUpdate--schoolSupport'
+      )
 
-        const frenchLanguageRightsSelectElement =
-          document.querySelector<HTMLSelectElement>(
-            '#votersListUpdate--frenchLanguageRights'
-          )
+    const frenchLanguageRightsSelectElement =
+      document.querySelector<HTMLSelectElement>(
+        '#votersListUpdate--frenchLanguageRights'
+      )
 
-        if (residencyStatusSelectElement !== null) {
-          for (const residencyStatus of voterDetailListsResponse.residencyStatuses) {
-            const optionElement = document.createElement('option')
-            optionElement.value = residencyStatus.ResidencyStatusCode
-            optionElement.textContent =
-              residencyStatus.ResidencyStatusDescription === ''
-                ? '(Select a Status)'
-                : residencyStatus.ResidencyStatusDescription
+    if (residencyStatusSelectElement !== null) {
+      for (const residencyStatus of voterDetailListsResponse.residencyStatuses) {
+        const optionElement = document.createElement('option')
+        optionElement.value = residencyStatus.ResidencyStatusCode
+        optionElement.textContent =
+          residencyStatus.ResidencyStatusDescription === ''
+            ? '(Select a Status)'
+            : residencyStatus.ResidencyStatusDescription
 
-            if (
-              residencyStatus.ResidencyStatusCode ===
-              residencyStatusSelectElement.dataset.defaultValue
-            ) {
-              optionElement.selected = true
-            }
-
-            residencyStatusSelectElement.append(optionElement)
-          }
+        if (
+          residencyStatus.ResidencyStatusCode ===
+          residencyStatusSelectElement.dataset.defaultValue
+        ) {
+          optionElement.selected = true
         }
 
-        if (occupancyStatusSelectElement !== null) {
-          for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
-            const optionElement = document.createElement('option')
-            optionElement.value = occupancyStatus.OccupancyStatusCode
-            optionElement.textContent =
-              occupancyStatus.OccupancyStatusDescription === ''
-                ? '(Select a Status)'
-                : occupancyStatus.OccupancyStatusDescription
+        residencyStatusSelectElement.append(optionElement)
+      }
+    }
 
-            if (
-              occupancyStatus.OccupancyStatusCode ===
-              occupancyStatusSelectElement.dataset.defaultValue
-            ) {
-              optionElement.selected = true
-            }
+    if (occupancyStatusSelectElement !== null) {
+      for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
+        const optionElement = document.createElement('option')
+        optionElement.value = occupancyStatus.OccupancyStatusCode
+        optionElement.textContent =
+          occupancyStatus.OccupancyStatusDescription === ''
+            ? '(Select a Status)'
+            : occupancyStatus.OccupancyStatusDescription
 
-            occupancyStatusSelectElement.append(optionElement)
-          }
+        if (
+          occupancyStatus.OccupancyStatusCode ===
+          occupancyStatusSelectElement.dataset.defaultValue
+        ) {
+          optionElement.selected = true
         }
 
-        if (religionCodeSelectElement !== null) {
-          for (const religionCode of voterDetailListsResponse.religionCodes) {
-            const optionElement = document.createElement('option')
-            optionElement.value = religionCode.ReligionCode
-            optionElement.textContent =
-              religionCode.ReligionDescription === ''
-                ? '(Select a Status)'
-                : religionCode.ReligionDescription
+        occupancyStatusSelectElement.append(optionElement)
+      }
+    }
 
-            if (
-              religionCode.ReligionCode ===
-              religionCodeSelectElement.dataset.defaultValue
-            ) {
-              optionElement.selected = true
-            }
+    if (religionCodeSelectElement !== null) {
+      for (const religionCode of voterDetailListsResponse.religionCodes) {
+        const optionElement = document.createElement('option')
+        optionElement.value = religionCode.ReligionCode
+        optionElement.textContent =
+          religionCode.ReligionDescription === ''
+            ? '(Select a Status)'
+            : religionCode.ReligionDescription
 
-            religionCodeSelectElement.append(optionElement)
-          }
+        if (
+          religionCode.ReligionCode ===
+          religionCodeSelectElement.dataset.defaultValue
+        ) {
+          optionElement.selected = true
         }
 
-        if (schoolSupportCodeSelectElement !== null) {
-          for (const schoolSupportCode of voterDetailListsResponse.schoolSupportCodes) {
-            const optionElement = document.createElement('option')
-            optionElement.value = schoolSupportCode.SchoolSupportCode
-            optionElement.textContent =
-              schoolSupportCode.SchoolSupportDescription
+        religionCodeSelectElement.append(optionElement)
+      }
+    }
 
-            if (
-              schoolSupportCode.SchoolSupportCode ===
-              schoolSupportCodeSelectElement.dataset.defaultValue
-            ) {
-              optionElement.selected = true
-            }
+    if (schoolSupportCodeSelectElement !== null) {
+      for (const schoolSupportCode of voterDetailListsResponse.schoolSupportCodes) {
+        const optionElement = document.createElement('option')
+        optionElement.value = schoolSupportCode.SchoolSupportCode
+        optionElement.textContent = schoolSupportCode.SchoolSupportDescription
 
-            schoolSupportCodeSelectElement.append(optionElement)
-          }
+        if (
+          schoolSupportCode.SchoolSupportCode ===
+          schoolSupportCodeSelectElement.dataset.defaultValue
+        ) {
+          optionElement.selected = true
         }
 
-        if (frenchLanguageRightsSelectElement !== null) {
-          for (const frenchLanguageRights of voterDetailListsResponse.frenchRightsCodes) {
-            const optionElement = document.createElement('option')
-            optionElement.value = frenchLanguageRights.FrenchLanguageRightsCode
-            optionElement.textContent =
-              frenchLanguageRights.FrenchLanguageRightsDescription === ''
-                ? '(Select a Status)'
-                : frenchLanguageRights.FrenchLanguageRightsDescription
+        schoolSupportCodeSelectElement.append(optionElement)
+      }
+    }
 
-            if (
-              frenchLanguageRights.FrenchLanguageRightsCode ===
-              frenchLanguageRightsSelectElement.dataset.defaultValue
-            ) {
-              optionElement.selected = true
-            }
+    if (frenchLanguageRightsSelectElement !== null) {
+      for (const frenchLanguageRights of voterDetailListsResponse.frenchRightsCodes) {
+        const optionElement = document.createElement('option')
+        optionElement.value = frenchLanguageRights.FrenchLanguageRightsCode
+        optionElement.textContent =
+          frenchLanguageRights.FrenchLanguageRightsDescription === ''
+            ? '(Select a Status)'
+            : frenchLanguageRights.FrenchLanguageRightsDescription
 
-            frenchLanguageRightsSelectElement.append(optionElement)
-          }
+        if (
+          frenchLanguageRights.FrenchLanguageRightsCode ===
+          frenchLanguageRightsSelectElement.dataset.defaultValue
+        ) {
+          optionElement.selected = true
         }
-      })
+
+        frenchLanguageRightsSelectElement.append(optionElement)
+      }
+    }
   }
 
   void doLoadVoterDetailLists()
@@ -432,4 +434,4 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
   if (document.querySelector('#form--voteByMailUpdate') !== null) {
     initializeCommonFormElements('voteByMailUpdate')
   }
-})()
+}

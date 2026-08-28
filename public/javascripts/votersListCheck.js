@@ -1,6 +1,5 @@
 "use strict";
-;
-(() => {
+{
     void voterServices.doLoadStreetNames();
     const tabLinkElements = document.querySelectorAll('.tabs li a');
     const tabContentElements = document.querySelectorAll('.tabs-content .tab-content');
@@ -17,10 +16,12 @@
         for (const tabContentElement of tabContentElements) {
             tabContentElement.classList.toggle('is-hidden', tabContentElement.id !== tabId);
         }
-        voterServices.resizeParentIFrame?.();
+        if (voterServices.resizeParentIFrame !== undefined) {
+            voterServices.resizeParentIFrame();
+        }
     }
     for (const tabLinkElement of tabLinkElements) {
         tabLinkElement.addEventListener('click', switchTab);
     }
     document.querySelector('#votersList--firstName')?.focus();
-})();
+}

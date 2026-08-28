@@ -8,29 +8,33 @@ import handler_votersListResult from '../handlers/votersList/votersListResult.ha
 import handler_votersListStatus from '../handlers/votersList/votersListStatus.handler.js'
 import handler_votersListSubmit from '../handlers/votersList/votersListSubmit.handler.js'
 
-export const router = Router()
-
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const fileSizeLimit = 10 * 1024 * 1024 // 10 MB
 
 const upload = multer({
   limits: {
     files: 1,
+
+    // eslint-disable-next-line sonarjs/content-length
     fileSize: fileSizeLimit
   },
   storage: multer.memoryStorage()
 })
 
-router
-  .get('/', handler_votersListCheck)
-  .get('/doGetAllStreetNames', handler_doGetAllStreetNames)
+export default function votersListRouter(): Router {
+  const router = Router()
 
-router.post('/status', handler_votersListStatus)
+  router
+    .get('/', handler_votersListCheck)
+    .get('/doGetAllStreetNames', handler_doGetAllStreetNames)
 
-router
-  .post('/result', handler_votersListResult)
-  .get('/doGetVoterDetailLists', handler_doGetVoterDetailLists)
+  router.post('/status', handler_votersListStatus)
 
-router.post('/submit', upload.single('uploadID'), handler_votersListSubmit)
+  router
+    .post('/result', handler_votersListResult)
+    .get('/doGetVoterDetailLists', handler_doGetVoterDetailLists)
 
-export default router
+  router.post('/submit', upload.single('uploadID'), handler_votersListSubmit)
+
+  return router
+}

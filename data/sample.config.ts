@@ -15,6 +15,7 @@ export const config: Config = {
     countyMunicipalityCode: '9999',
 
     username: 'SAMPLE',
+
     password: 'samplePass',
 
     useTrainingDatabase: true

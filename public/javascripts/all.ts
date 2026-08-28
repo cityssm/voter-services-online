@@ -49,7 +49,7 @@ declare global {
     }
   }
 
-  globalThis.voterServices = {
+  globalThis.window.voterServices = {
     urlPrefix: document.body.dataset.urlPrefix ?? '',
 
     /**
@@ -63,7 +63,6 @@ declare global {
       let timeout: NodeJS.Timeout | number | undefined
 
       return function (this: unknown, ..._arguments): void {
-        // eslint-disable-next-line unicorn/no-this-outside-of-class
         const context = this as unknown as unknown[]
 
         const later = function (): void {
@@ -87,28 +86,26 @@ declare global {
         return
       }
 
-      await fetch(
+      const response = await fetch(
         `${document.body.dataset.urlPrefix}/votersList/doGetAllStreetNames`
       )
-        .then(
-          async (response) =>
-            (await response.json()) as DoGetAllStreetNamesResponse
-        )
-        .then((streetNamesResponse) => {
-          streetNames = streetNamesResponse.streetNames
 
-          sessionStorage.setItem(
-            streetNamesSessionStorageKey,
-            JSON.stringify(streetNames)
-          )
+      const streetNamesResponse =
+        (await response.json()) as DoGetAllStreetNamesResponse
 
-          renderStreetNamesSelectElement()
-        })
-        .finally(() => {
-          if (callback !== undefined) {
-            callback()
-          }
-        })
+      // eslint-disable-next-line require-atomic-updates
+      streetNames = streetNamesResponse.streetNames
+
+      sessionStorage.setItem(
+        streetNamesSessionStorageKey,
+        JSON.stringify(streetNames)
+      )
+
+      renderStreetNamesSelectElement()
+
+      if (callback !== undefined) {
+        callback()
+      }
     }
   }
 })()
@@ -142,19 +139,18 @@ declare global {
  * Form Submission Limit
  */
 
-;(() => {
+{
   const formElements =
     document.querySelectorAll<HTMLFormElement>('form[action]')
 
   for (const formElement of formElements) {
     formElement.addEventListener('submit', () => {
-      for (const btn of formElement.querySelectorAll<HTMLButtonElement>(
+      for (const submitButtonElement of formElement.querySelectorAll<HTMLButtonElement>(
         'button[type="submit"]'
       )) {
-        btn.disabled = true
-        btn.classList.add('is-loading')
+        submitButtonElement.disabled = true
+        submitButtonElement.classList.add('is-loading')
       }
-      return true
     })
   }
-})()
+}

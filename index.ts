@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
-let doShutdown = false
+let isShuttingDown = false
 
 function initializeCluster(): void {
   const directoryName = path.dirname(fileURLToPath(import.meta.url))
@@ -71,7 +71,7 @@ function initializeCluster(): void {
       activeWorkers.delete(pid)
     }
 
-    if (!doShutdown) {
+    if (!isShuttingDown) {
       debug('Starting another worker')
       const newWorker = cluster.fork()
 
@@ -94,7 +94,8 @@ function initializeCluster(): void {
    */
 
   exitHook(() => {
-    doShutdown = true
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
+    isShuttingDown = true
 
     debug('Shutting down cluster workers...')
 
@@ -112,7 +113,7 @@ function initializeCluster(): void {
   })
 }
 
-function startApplication(): void {
+function startApp(): void {
   /*
    * Start workers
    */
@@ -120,7 +121,7 @@ function startApplication(): void {
   initializeCluster()
 }
 
-startApplication()
+startApp()
 
 /*
  * Set up the startup test
@@ -130,7 +131,8 @@ function handleSignal(signal: NodeJS.Signals): void {
   debug(`Received signal: ${signal}`)
 
   debug('Shutting down...')
-  doShutdown = true
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
+  isShuttingDown = true
 
   gracefulExit()
 }

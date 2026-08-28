@@ -1,4 +1,4 @@
-(() => {
+{
     const addressSearchFieldElement = document.querySelector('#addressSearch--civicAddress');
     const addressSearchResultsElement = document.querySelector('#container--addressSearchResults');
     const addressDetailsElement = document.querySelector('#container--addressDetails');
@@ -172,12 +172,10 @@
             streetName: address.StreetNameFull,
             streetNumber: address.StreetNumber
         });
-        await fetch(`${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`)
-            .then(async (response) => (await response.json()))
-            .then((addressDetails) => {
-            renderVotingLocations(addressDetails.votingLocations);
-            renderCandidates(addressDetails.positions);
-        });
+        const response = await fetch(`${voterServices.urlPrefix}/doGetAddressDetails?${urlParameters.toString()}`);
+        const addressDetails = (await response.json());
+        renderVotingLocations(addressDetails.votingLocations);
+        renderCandidates(addressDetails.positions);
     }
     async function doAddressSearch() {
         if (addressSearchResultsElement === null) {
@@ -193,54 +191,53 @@
       `;
             return;
         }
-        await fetch(`${voterServices.urlPrefix}/doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`)
-            .then(async (response) => (await response.json()))
-            .then((addressSearchResults) => {
-            if (addressSearchResults.addresses.length === 0) {
-                addressSearchResultsElement.innerHTML = `
-            <div class="notification is-warning is-light">
-              <strong>There are no addresses available.</strong><br />
-              Be sure to use a complete civic address, with the civic number first.
-            </div>
-          `;
-                return;
-            }
-            const panelElement = document.createElement('div');
-            panelElement.className = 'panel';
-            for (const [addressIndex, address] of addressSearchResults.addresses.entries()) {
-                const panelBlockElement = document.createElement('a');
-                panelBlockElement.className = 'panel-block is-block';
-                panelBlockElement.dataset.addressIndex = addressIndex.toString();
-                panelBlockElement.href = '#';
-                panelBlockElement.addEventListener('click', (clickEvent) => {
-                    clickEvent.preventDefault();
-                    addressSearchFieldElement.value = address.Address;
-                    addressSearchResultsElement.classList.add('is-hidden');
-                    for (const possiblePanelBlockElement of addressSearchResultsElement.querySelectorAll('.panel-block')) {
-                        if (possiblePanelBlockElement.dataset.addressIndex !==
-                            panelBlockElement.dataset.addressIndex) {
-                            possiblePanelBlockElement.classList.add('is-hidden');
-                            possiblePanelBlockElement.classList.remove('is-block');
-                        }
+        const response = await fetch(`${voterServices.urlPrefix}/doGetAddresses?civicAddress=${encodeURIComponent(civicAddress)}`);
+        const addressSearchResults = (await response.json());
+        if (addressSearchResults.addresses.length === 0) {
+            addressSearchResultsElement.innerHTML = `
+        <div class="notification is-warning is-light">
+          <strong>There are no addresses available.</strong><br />
+          Be sure to use a complete civic address, with the civic number first.
+        </div>
+      `;
+            return;
+        }
+        const panelElement = document.createElement('div');
+        panelElement.className = 'panel';
+        for (const [addressIndex, address] of addressSearchResults.addresses.entries()) {
+            const panelBlockElement = document.createElement('a');
+            panelBlockElement.className = 'panel-block is-block';
+            panelBlockElement.dataset.addressIndex = addressIndex.toString();
+            panelBlockElement.href = '#';
+            panelBlockElement.addEventListener('click', (clickEvent) => {
+                clickEvent.preventDefault();
+                addressSearchFieldElement.value = address.Address;
+                addressSearchResultsElement.classList.add('is-hidden');
+                for (const possiblePanelBlockElement of addressSearchResultsElement.querySelectorAll('.panel-block')) {
+                    if (possiblePanelBlockElement.dataset.addressIndex ===
+                        panelBlockElement.dataset.addressIndex) {
+                        continue;
                     }
-                    void doDisplayAddress(address);
-                });
-                panelBlockElement.innerHTML = `
-            <div class="columns is-mobile">
-              <div class="column field--address"></div>
-              <div class="column is-narrow has-text-right">
-                Ward <span class="field--ward"></span><br />
-                Poll <span class="field--pollAndSuffix"></span>
-              </div>
-            </div>
-          `;
-                panelBlockElement.querySelector('.field--address').textContent = address.Address;
-                panelBlockElement.querySelector('.field--ward').textContent = address.Ward;
-                panelBlockElement.querySelector('.field--pollAndSuffix').textContent = address.PollAndSuffix;
-                panelElement.append(panelBlockElement);
-            }
-            addressSearchResultsElement.replaceChildren(panelElement);
-        });
+                    possiblePanelBlockElement.classList.add('is-hidden');
+                    possiblePanelBlockElement.classList.remove('is-block');
+                }
+                void doDisplayAddress(address);
+            });
+            panelBlockElement.innerHTML = `
+        <div class="columns is-mobile">
+          <div class="column field--address"></div>
+          <div class="column is-narrow has-text-right">
+            Ward <span class="field--ward"></span><br />
+            Poll <span class="field--pollAndSuffix"></span>
+          </div>
+        </div>
+      `;
+            panelBlockElement.querySelector('.field--address').textContent = address.Address;
+            panelBlockElement.querySelector('.field--ward').textContent = address.Ward;
+            panelBlockElement.querySelector('.field--pollAndSuffix').textContent = address.PollAndSuffix;
+            panelElement.append(panelBlockElement);
+        }
+        addressSearchResultsElement.replaceChildren(panelElement);
     }
     document
         .querySelector('#form--addressSearch')
@@ -263,8 +260,8 @@
     });
     addressSearchFieldElement.addEventListener('input', debouncedAddressSearch);
     void doAddressSearch();
-})();
-(() => {
+}
+{
     const votersListModalElement = document.querySelector('#modal--votersList');
     document
         .querySelector('#button--votersList')
@@ -291,4 +288,4 @@
     for (const closeButtonElement of document.querySelectorAll('.modal-close-button')) {
         closeButtonElement.addEventListener('click', closeModal);
     }
-})();
+}

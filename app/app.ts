@@ -16,123 +16,128 @@ const debug = Debug(
  * INITIALIZE APP
  */
 
-export const app = express()
+export default function createApp(): express.Express {
+  const app = express()
 
-app.use((request, _response, next) => {
-  debug(`${request.method} ${request.url}`)
-  next()
-})
-
-/*
- * Configure Views
- */
-
-app.set('views', 'views').set('view engine', 'ejs')
-
-/*
- * Adjust headers
- */
-
-app.disable('x-powered-by')
-
-if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
-  app.set('etag', false)
-}
-
-if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
-  app.use(compression())
-}
-
-/*
- * Parsers
- */
-
-app.use(express.json())
-
-app.use(
-  express.urlencoded({
-    extended: false
+  app.use((request, _response, next) => {
+    debug(`${request.method} ${request.url}`)
+    next()
   })
-)
 
-/*
- * URL Prefix
- */
+  /*
+   * Configure Views
+   */
 
-const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
+  app.set('views', 'views').set('view engine', 'ejs')
 
-if (urlPrefix !== '') {
-  debug(`urlPrefix = ${urlPrefix}`)
+  /*
+   * Adjust headers
+   */
 
-  app.all('', (_request, response) => {
-    response.redirect(urlPrefix)
-  })
-}
+  app.disable('x-powered-by')
 
-/*
- * Static content
- */
+  if (configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
+    app.set('etag', false)
+  }
 
-app
-  .use(urlPrefix, express.static('public'))
-  .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
-  .use(`${urlPrefix}/lib/bulma-js`, express.static('node_modules/@cityssm/bulma-js/dist'))
-  .use(
-    `${urlPrefix}/lib/fa`,
-    express.static('node_modules/@fortawesome/fontawesome-free')
+  if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
+    app.use(compression())
+  }
+
+  /*
+   * Parsers
+   */
+
+  app.use(express.json())
+
+  app.use(
+    express.urlencoded({
+      extended: false
+    })
   )
 
-/*
- * LOCALS
- */
+  /*
+   * URL Prefix
+   */
 
-app.locals.configFunctions = configFunctions
-app.locals.urlPrefix = urlPrefix
+  const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
-/*
- * ROUTES
- */
+  if (urlPrefix !== '') {
+    debug(`urlPrefix = ${urlPrefix}`)
 
-app.use(`${urlPrefix}/votersList`, router_votersList)
-app.use(`${urlPrefix}/`, router_main)
-
-/*
- * Error handling
- */
-
-// Catch 404 and forward to error handler
-app.use(
-  (
-    _request: express.Request,
-    _response: express.Response,
-    next: express.NextFunction
-  ) => {
-    next(createError(404))
+    app.all('', (_request, response) => {
+      response.redirect(urlPrefix)
+    })
   }
-)
 
-// Error handler
-app.use(
-  (
-    error: Partial<HttpError>,
-    request: express.Request,
-    response: express.Response,
-    _next: express.NextFunction
-  ) => {
-    // Set locals, only providing error in development
-    response.locals.message = error.message
-    response.locals.error =
-      request.app.get('env') === 'development' ? error : {}
+  /*
+   * Static content
+   */
 
-    response.locals.configFunctions = configFunctions
-    response.locals.urlPrefix = configFunctions.getConfigProperty(
-      'reverseProxy.urlPrefix'
+  app
+    .use(urlPrefix, express.static('public'))
+    .use(`${urlPrefix}/lib/bulma`, express.static('node_modules/bulma/css'))
+    .use(
+      `${urlPrefix}/lib/bulma-js`,
+      express.static('node_modules/@cityssm/bulma-js/dist')
+    )
+    .use(
+      `${urlPrefix}/lib/fa`,
+      express.static('node_modules/@fortawesome/fontawesome-free')
     )
 
-    // Render the error page
-    response.status(error.status ?? 500)
-    response.render('error')
-  }
-)
+  /*
+   * LOCALS
+   */
 
-export default app
+  app.locals.configFunctions = configFunctions
+  app.locals.urlPrefix = urlPrefix
+
+  /*
+   * ROUTES
+   */
+
+  app.use(`${urlPrefix}/votersList`, router_votersList())
+  app.use(`${urlPrefix}/`, router_main())
+
+  /*
+   * Error handling
+   */
+
+  // Catch 404 and forward to error handler
+  app.use(
+    (
+      _request: express.Request,
+      _response: express.Response,
+      next: express.NextFunction
+    ) => {
+      next(createError(404))
+    }
+  )
+
+  // Error handler
+  app.use(
+    (
+      error: Partial<HttpError>,
+      request: express.Request,
+      response: express.Response,
+      _next: express.NextFunction
+    ) => {
+      // Set locals, only providing error in development
+      response.locals.message = error.message
+      response.locals.error =
+        request.app.get('env') === 'development' ? error : {}
+
+      response.locals.configFunctions = configFunctions
+      response.locals.urlPrefix = configFunctions.getConfigProperty(
+        'reverseProxy.urlPrefix'
+      )
+
+      // Render the error page
+      response.status(error.status ?? 500)
+      response.render('error')
+    }
+  )
+
+  return app
+}

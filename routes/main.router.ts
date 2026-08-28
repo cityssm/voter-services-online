@@ -4,11 +4,13 @@ import handler_doGetAddressDetails from '../handlers/main/doGetAddressDetails.ha
 import handler_doGetAddresses from '../handlers/main/doGetAddresses.handler.js'
 import handler_main from '../handlers/main/main.handler.js'
 
-export const router = Router()
+export default function mainRouter(): Router {
+  const router = Router()
 
-router
-  .get('/', handler_main)
-  .get('/doGetAddresses', handler_doGetAddresses)
-  .get('/doGetAddressDetails', handler_doGetAddressDetails)
+  router
+    .get('/', handler_main)
+    .get('/doGetAddresses', handler_doGetAddresses)
+    .get('/doGetAddressDetails', handler_doGetAddressDetails)
 
-export default router
+  return router
+}
