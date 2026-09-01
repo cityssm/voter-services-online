@@ -1,3 +1,5 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 
 import type { DoGetVoterDetailListsResponse } from '../../handlers/votersList/doGetVoterDetailLists.handler.js'
@@ -107,6 +109,7 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
       ) {
         const fileSizeInBytes = uploadIDFileInputElement.files[0].size
 
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         if (fileSizeInBytes > 10 * 1024 * 1024) {
           bulmaJS.alert({
             message:
@@ -198,9 +201,14 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
         '#votersListUpdate--residencyStatus'
       )
 
-    const occupancyStatusSelectElement =
+    const occupancyStatusUpdateSelectElement =
       document.querySelector<HTMLSelectElement>(
         '#votersListUpdate--occupancyStatus'
+      )
+
+    const occupancyStatusVoteByMailSelectElement =
+      document.querySelector<HTMLSelectElement>(
+        '#voteByMailUpdate--occupancyStatus'
       )
 
     const religionCodeSelectElement = document.querySelector<HTMLSelectElement>(
@@ -237,7 +245,7 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
       }
     }
 
-    if (occupancyStatusSelectElement !== null) {
+    if (occupancyStatusUpdateSelectElement !== null) {
       for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
         const optionElement = document.createElement('option')
         optionElement.value = occupancyStatus.OccupancyStatusCode
@@ -248,12 +256,25 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
 
         if (
           occupancyStatus.OccupancyStatusCode ===
-          occupancyStatusSelectElement.dataset.defaultValue
+          occupancyStatusUpdateSelectElement.dataset.defaultValue
         ) {
           optionElement.selected = true
         }
 
-        occupancyStatusSelectElement.append(optionElement)
+        occupancyStatusUpdateSelectElement.append(optionElement)
+      }
+    }
+
+    if (occupancyStatusVoteByMailSelectElement !== null) {
+      for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
+        const optionElement = document.createElement('option')
+        optionElement.value = occupancyStatus.OccupancyStatusCode
+        optionElement.textContent =
+          occupancyStatus.OccupancyStatusDescription === ''
+            ? '(Select a Status)'
+            : occupancyStatus.OccupancyStatusDescription
+
+        occupancyStatusVoteByMailSelectElement.append(optionElement)
       }
     }
 

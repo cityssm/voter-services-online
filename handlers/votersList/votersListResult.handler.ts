@@ -1,4 +1,6 @@
-import formatCivicAddress, { postalCodeRegex } from '@cityssm/civic-address-format'
+import formatCivicAddress, {
+  postalCodeRegex
+} from '@cityssm/civic-address-format'
 import { isCanada } from '@cityssm/statscan-tools'
 import type { VotersListFoundRecord } from '@cityssm/voterview-api/types'
 import Debug from 'debug'
@@ -59,6 +61,14 @@ export default async function handler(
     streetName: request.body.streetName.trim(),
     unitNumber: request.body.unitNumber.trim()
   })
+
+  voterRecord.FrenchLanguageRights =
+    voterRecord.FrenchLanguageRights === ''
+      ? 'N'
+      : voterRecord.FrenchLanguageRights
+
+  voterRecord.Religion =
+    voterRecord.Religion === '' ? 'N' : voterRecord.Religion
 
   voterRecord.StreetName = request.body.streetName.trim()
   voterRecord.StreetNumber = request.body.streetNumber.trim()

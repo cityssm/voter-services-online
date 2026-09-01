@@ -1,3 +1,5 @@
+/* eslint-disable runtime-cleanup/no-unmanaged-event-listeners */
+
 import type { DoGetAddressDetailsResponse } from '../../handlers/main/doGetAddressDetails.handler.js'
 import type { DoGetAddressesResponse } from '../../handlers/main/doGetAddresses.handler.js'
 

@@ -28,6 +28,12 @@ export default async function handler(request, response) {
         streetName: request.body.streetName.trim(),
         unitNumber: request.body.unitNumber.trim()
     });
+    voterRecord.FrenchLanguageRights =
+        voterRecord.FrenchLanguageRights === ''
+            ? 'N'
+            : voterRecord.FrenchLanguageRights;
+    voterRecord.Religion =
+        voterRecord.Religion === '' ? 'N' : voterRecord.Religion;
     voterRecord.StreetName = request.body.streetName.trim();
     voterRecord.StreetNumber = request.body.streetNumber.trim();
     voterRecord.Unit = request.body.unitNumber.trim();

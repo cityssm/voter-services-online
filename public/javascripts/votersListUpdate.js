@@ -109,7 +109,8 @@
         const response = await fetch(`${voterServices.urlPrefix}/votersList/doGetVoterDetailLists`);
         const voterDetailListsResponse = (await response.json());
         const residencyStatusSelectElement = document.querySelector('#votersListUpdate--residencyStatus');
-        const occupancyStatusSelectElement = document.querySelector('#votersListUpdate--occupancyStatus');
+        const occupancyStatusUpdateSelectElement = document.querySelector('#votersListUpdate--occupancyStatus');
+        const occupancyStatusVoteByMailSelectElement = document.querySelector('#voteByMailUpdate--occupancyStatus');
         const religionCodeSelectElement = document.querySelector('#votersListUpdate--religion');
         const schoolSupportCodeSelectElement = document.querySelector('#votersListUpdate--schoolSupport');
         const frenchLanguageRightsSelectElement = document.querySelector('#votersListUpdate--frenchLanguageRights');
@@ -128,7 +129,7 @@
                 residencyStatusSelectElement.append(optionElement);
             }
         }
-        if (occupancyStatusSelectElement !== null) {
+        if (occupancyStatusUpdateSelectElement !== null) {
             for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
                 const optionElement = document.createElement('option');
                 optionElement.value = occupancyStatus.OccupancyStatusCode;
@@ -137,10 +138,21 @@
                         ? '(Select a Status)'
                         : occupancyStatus.OccupancyStatusDescription;
                 if (occupancyStatus.OccupancyStatusCode ===
-                    occupancyStatusSelectElement.dataset.defaultValue) {
+                    occupancyStatusUpdateSelectElement.dataset.defaultValue) {
                     optionElement.selected = true;
                 }
-                occupancyStatusSelectElement.append(optionElement);
+                occupancyStatusUpdateSelectElement.append(optionElement);
+            }
+        }
+        if (occupancyStatusVoteByMailSelectElement !== null) {
+            for (const occupancyStatus of voterDetailListsResponse.occupancyStatuses) {
+                const optionElement = document.createElement('option');
+                optionElement.value = occupancyStatus.OccupancyStatusCode;
+                optionElement.textContent =
+                    occupancyStatus.OccupancyStatusDescription === ''
+                        ? '(Select a Status)'
+                        : occupancyStatus.OccupancyStatusDescription;
+                occupancyStatusVoteByMailSelectElement.append(optionElement);
             }
         }
         if (religionCodeSelectElement !== null) {

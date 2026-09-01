@@ -798,7 +798,6 @@
     <input name="dateOfBirthYear" type="hidden" value="<%= dateOfBirthPieces[0] ?? '' %>" />
 
     <input name="residencyStatus" type="hidden" value="<%= voterRecord.ResidencyStatus ?? '' %>" />
-    <input name="occupancyStatus" type="hidden" value="<%= voterRecord.OccupancyStatus ?? '' %>" />
     <input name="religion" type="hidden" value="<%= voterRecord.Religion ?? '' %>" />
     <input name="schoolSupport" type="hidden" value="<%= voterRecord.SchoolSupport ?? '' %>" />
     <input name="frenchLanguageRights" type="hidden" value="<%= voterRecord.FrenchLanguageRights ?? '' %>" />
@@ -831,10 +830,35 @@
       </div>
     </div>
 
-    <p>
-      <strong>Residential Address</strong><br/>
-      <%= voterRecord.PropertyAddress ?? '' %>
-    </p>
+    <div class="columns">
+      <div class="column">
+        <p>
+          <strong>Residential Address</strong><br/>
+          <%= voterRecord.PropertyAddress ?? '' %>
+        </p>
+      </div>
+      <div class="column">
+        <% if ((voterRecord.OccupancyStatus ?? '') === '') { %>
+          <div class="field">
+            <label for="voteByMailUpdate--occupancyStatus" class="label">Occupancy Status</label>
+            <div class="control is-expanded has-icons-right">
+              <div class="select is-fullwidth">
+                <select
+                  id="voteByMailUpdate--occupancyStatus"
+                  name="occupancyStatus"
+                  required
+                ></select>
+              </div>
+              <span class="icon is-small is-right">
+                <i class="fa-solid fa-asterisk"></i>
+              </span>
+            </div>
+          </div>
+        <% } else { %>
+          <input name="occupancyStatus" type="hidden" value="<%= voterRecord.OccupancyStatus ?? '' %>" />
+        <% } %>
+      </div>
+    </div>
 
     <hr />
 

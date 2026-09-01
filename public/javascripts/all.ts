@@ -126,10 +126,12 @@ declare global {
     parentIFrame.style.height = `${document.body.scrollHeight}px`
   }
 
+  // eslint-disable-next-line runtime-cleanup/no-unmanaged-event-listeners
   window.addEventListener('load', () => {
     globalThis.voterServices.resizeParentIFrame?.()
   })
 
+  // eslint-disable-next-line runtime-cleanup/no-unmanaged-event-listeners
   window.addEventListener('resize', () => {
     globalThis.voterServices.resizeParentIFrame?.()
   })
@@ -144,6 +146,7 @@ declare global {
     document.querySelectorAll<HTMLFormElement>('form[action]')
 
   for (const formElement of formElements) {
+    // eslint-disable-next-line runtime-cleanup/no-unmanaged-event-listeners
     formElement.addEventListener('submit', () => {
       for (const submitButtonElement of formElement.querySelectorAll<HTMLButtonElement>(
         'button[type="submit"]'

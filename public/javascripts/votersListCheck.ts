@@ -37,6 +37,7 @@
   }
 
   for (const tabLinkElement of tabLinkElements) {
+    // eslint-disable-next-line runtime-cleanup/no-unmanaged-event-listeners
     tabLinkElement.addEventListener('click', switchTab)
   }
 
