@@ -70,7 +70,9 @@ export default async function handler(request, response) {
             AbsenteeCity: voterRegistration.MailingCity,
             AbsenteeProvince: voterRegistration.MailingProvince,
             AbsenteePostalCode: voterRegistration.MailingPostalCode,
-            AbsenteeCountry: voterRegistration.MailingCountry
+            AbsenteeCountry: voterRegistration.MailingCountry,
+            PickUpBallot: request.body.pickUpBallot === 'true',
+            PickUpBallotName: request.body.pickUpBallotName?.trim() ?? ''
         };
     }
     const registrationResponse = await voterViewApi.submitVotersListUpdate(voterRegistration);

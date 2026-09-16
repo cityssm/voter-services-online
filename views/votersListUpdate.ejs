@@ -1109,6 +1109,67 @@
     <hr />
 
     <fieldset>
+      <legend class="title is-5">Preferred Delivery Method</legend>
+
+      <div class="message is-info">
+        <div class="message-body">
+          <p>
+            Your election kit can be delivered to your address or picked up in person.
+          </p>
+          <p>
+            Election staff will reach to electors once a kit is ready.
+            Election kits will be built as requests come in, beginning the week of September 21.
+          </p>
+          <p>
+            If picking up in person, please provide the name of the person who will be collecting your election kit.
+            Pickups will take place at the Civic Centre.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="voteByMailUpdate--pickUpBallot">
+              Preferred Delivery Method
+            </label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select
+                  id="voteByMailUpdate--pickUpBallot"
+                  name="pickUpBallot"
+                  required
+                >
+                  <option value="false">Deliver to my address</option>
+                  <option value="true">Pick up in person</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="voteByMailUpdate--pickUpBallotName">
+              Name of Person Picking Up Election Kit
+            </label>
+            <div class="control">
+              <input
+                class="input"
+                id="voteByMailUpdate--pickUpBallotName"
+                name="pickUpBallotName"
+                type="text"
+                maxlength="40"
+                disabled
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <hr />
+
+    <fieldset>
       <legend class="title is-5">Identification</legend>
 
       <% if (configFunctions.getConfigProperty('settings.province') === 'ON') { %>

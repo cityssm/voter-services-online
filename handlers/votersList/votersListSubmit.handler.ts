@@ -48,6 +48,9 @@ interface VotersListSubmitRequest {
   absenteeVoteType?: '1'
 
   declareCanadian?: 'Y'
+
+  pickUpBallot?: 'false' | 'true'
+  pickUpBallotName?: string
 }
 
 const debug = Debug(`${DEBUG_NAMESPACE}:handlers:votersList:votersListSubmit`)
@@ -152,7 +155,10 @@ export default async function handler(
       AbsenteeCity: voterRegistration.MailingCity,
       AbsenteeProvince: voterRegistration.MailingProvince,
       AbsenteePostalCode: voterRegistration.MailingPostalCode,
-      AbsenteeCountry: voterRegistration.MailingCountry
+      AbsenteeCountry: voterRegistration.MailingCountry,
+
+      PickUpBallot: request.body.pickUpBallot === 'true',
+      PickUpBallotName: request.body.pickUpBallotName?.trim() ?? ''
     } satisfies VotersListUpdateRequest
   }
 

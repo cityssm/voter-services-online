@@ -244,5 +244,18 @@
     initializeCommonFormElements('votersListUpdate');
     if (document.querySelector('#form--voteByMailUpdate') !== null) {
         initializeCommonFormElements('voteByMailUpdate');
+        const pickUpBallotSelectElement = document.querySelector('#voteByMailUpdate--pickUpBallot');
+        function togglePickUpBallotNameInput() {
+            if (pickUpBallotSelectElement === null) {
+                return;
+            }
+            const pickUpBallotNameInputElement = document.querySelector('#voteByMailUpdate--pickUpBallotName');
+            pickUpBallotNameInputElement.required =
+                pickUpBallotSelectElement.value === 'true';
+            pickUpBallotNameInputElement.disabled =
+                !pickUpBallotNameInputElement.required;
+        }
+        pickUpBallotSelectElement?.addEventListener('change', togglePickUpBallotNameInput);
+        togglePickUpBallotNameInput();
     }
 }

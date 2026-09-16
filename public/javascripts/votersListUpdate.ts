@@ -454,5 +454,33 @@ type FormPrefixes = 'voteByMailUpdate' | 'votersListUpdate'
 
   if (document.querySelector('#form--voteByMailUpdate') !== null) {
     initializeCommonFormElements('voteByMailUpdate')
+
+    const pickUpBallotSelectElement = document.querySelector<HTMLSelectElement>(
+      '#voteByMailUpdate--pickUpBallot'
+    )
+
+    function togglePickUpBallotNameInput(): void {
+      if (pickUpBallotSelectElement === null) {
+        return
+      }
+
+      const pickUpBallotNameInputElement =
+        document.querySelector<HTMLInputElement>(
+          '#voteByMailUpdate--pickUpBallotName'
+        ) as HTMLInputElement
+
+      pickUpBallotNameInputElement.required =
+        pickUpBallotSelectElement.value === 'true'
+
+      pickUpBallotNameInputElement.disabled =
+        !pickUpBallotNameInputElement.required
+    }
+
+    pickUpBallotSelectElement?.addEventListener(
+      'change',
+      togglePickUpBallotNameInput
+    )
+
+    togglePickUpBallotNameInput()
   }
 }
