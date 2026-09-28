@@ -29,7 +29,7 @@
         <p class="mb-2">
           Please enter your personal information below to look up your record in the voters list.
           If your record is found, you will have the option to submit an application
-          to update your information, or apply for voting by mail.
+          to update your information<% if (configFunctions.getConfigProperty("settings.isVoteByMailAvailable")) { %>, or apply for voting by mail<% } %>.
         </p>
         <p>
           If you are not found in the voters list, you will be given the option
