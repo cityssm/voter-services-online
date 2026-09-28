@@ -42,16 +42,17 @@ function initializeCluster() {
             debug(`Worker ${pid.toString()} has been killed`);
             activeWorkers.delete(pid);
         }
-        if (!isShuttingDown) {
-            debug('Starting another worker');
-            const newWorker = cluster.fork();
-            const newPid = newWorker.process.pid;
-            if (newPid === undefined) {
-                debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
-                return;
-            }
-            activeWorkers.set(newPid, newWorker);
+        if (isShuttingDown) {
+            return;
         }
+        debug('Starting another worker');
+        const newWorker = cluster.fork();
+        const newPid = newWorker.process.pid;
+        if (newPid === undefined) {
+            debug('Forked replacement worker without a valid PID; not adding to activeWorkers map');
+            return;
+        }
+        activeWorkers.set(newPid, newWorker);
     });
     exitHook(() => {
         isShuttingDown = true;

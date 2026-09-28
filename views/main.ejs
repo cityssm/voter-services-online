@@ -39,7 +39,12 @@
               <span class="icon">
                 <i class="fa-solid fa-check-to-slot"></i>
               </span>
-              <span>Voters List Inquiry / Vote By Mail</span>
+              <span>
+                Voters List Inquiry
+                <% if (configFunctions.getConfigProperty("settings.isVoteByMailAvailable")) { %>
+                / Vote By Mail
+                <% } %>
+              </span>
             </button>
           </div>
         </div>

@@ -48,5 +48,7 @@ export interface Config {
     province?: (typeof provincesTerritoriesAlphaCodes)[number]
 
     candidateListUrl?: string
+
+    isVoteByMailAvailable?: boolean
   }
 }

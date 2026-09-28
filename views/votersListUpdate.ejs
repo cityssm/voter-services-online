@@ -59,6 +59,7 @@
         </p>
       </div>
     </div>
+    <% if (configFunctions.getConfigProperty("settings.isVoteByMailAvailable")) { %>
     <div class="column">
       <div class="box">
         <div class="buttons is-centered">
@@ -75,6 +76,7 @@
         </p>
       </div>
     </div>
+    <% } %>
   </div>
   <% } else { %>
   <div class="columns is-mobile">
@@ -772,7 +774,7 @@
   </form>
 </div>
 
-<% if (voterRecord.Found) { %>
+<% if (voterRecord.Found && configFunctions.getConfigProperty("settings.isVoteByMailAvailable")) { %>
 <div class="tabContainer is-hidden" id="tabContainer--voteByMail">
   <h2 class="title is-4">Vote By Mail Request</h2>
   <div class="message is-info">

@@ -20,7 +20,9 @@ export const configDefaultValues = {
   'settings.city': '',
   'settings.province': 'ON' as (typeof provincesTerritoriesAlphaCodes)[number],
 
-  'settings.candidateListUrl': ''
+  'settings.candidateListUrl': '',
+
+  'settings.isVoteByMailAvailable': false
 }
 
 export default configDefaultValues
