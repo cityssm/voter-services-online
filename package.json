@@ -40,7 +40,7 @@
     "exit-hook": "^5.1.0",
     "express": "^5.2.1",
     "http-errors": "^2.0.1",
-    "multer": "^2.4.0"
+    "multer": "^2.5.0"
   },
   "devDependencies": {
     "@types/compression": "^1.8.1",
